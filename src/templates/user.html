@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Quizonator user</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
     <h1>Hello {{name}}!</h1>
     {% for cont in content: %}
         <p>{{cont}}</p>
     {% endfor %}
-</body>
-</html>
+{% endblock %}

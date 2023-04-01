@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Login page{% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
 <form action="#" method="post">
     <p>Name:</p>
-    <p><input type="text" name="name"></p>
+    <p><input type="text" placeholder="Enter name" name="name"></p>
     <p><input type="submit" value="submit"></p>
+    <p>E-mail:</p>
+    <input type="email" name="email" placeholder="Enter email" value="{{email if email}}">
+    <input type="submit" value="submit">
 </form>
 {% endblock %}
