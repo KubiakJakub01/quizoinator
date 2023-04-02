@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hello {{name}}!</h1>
-    {% for cont in content: %}
-        <p>{{cont}}</p>
-    {% endfor %}
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Username: </strong> {{ current_user.name }}</li>
+        <li class="list-group-item"><strong>Email: </strong> {{ current_user.email }}</li>
+        <li class="list-group-item"><strong>Created: </strong> {{ current_user.data_created }}</li>
+        </ul>
+        <a href="/logout" class="btn btn-primary">Logout</a>
+    </div>
 {% endblock %}

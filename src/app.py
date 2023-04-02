@@ -81,24 +81,7 @@ def home():
 @app.route("/user")
 @login_required
 def user():
-    email = None
-    if "user" in session:
-        user_name = session["user"]
-        if request.method == "POST":
-            email = request.form["email"]
-            session["email"] = email
-            found_user = Users.query.filter_by(name=user_name).first()
-            found_user.email = email
-            db.session.commit()
-        else:
-            if "email" in session:
-                email = session["email"]
-        return render_template(
-            "user.html", name=user_name, email=email, content=["HTML", "CSS", "JS"]
-        )
-    else:
-        flash("You are not logged in!")
-        return redirect(url_for("login"))
+    return render_template("user.html")
 
 
 @app.route("/signup", methods=["POST", "GET"])
