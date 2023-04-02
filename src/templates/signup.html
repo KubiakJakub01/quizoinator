@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,15 +10,6 @@
   <body>
     <div class="container">
       <h1 class="mt-5 mb-3">User Login</h1>
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <div class="alert alert-danger">
-            {% for message in messages %}
-              <span>{{ message }}</span><br>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
       <form method="POST" class="mb-5">
         {{ form.hidden_tag() }}
         <div class="form-group">
@@ -40,3 +33,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
+{% endblock %}
