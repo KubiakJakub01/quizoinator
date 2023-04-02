@@ -5,6 +5,7 @@ from typing import List
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "mysecret"
@@ -18,10 +19,18 @@ class User(db.Model):
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
     name = Column(String(100))
     email = Column(String(100))
+    password_hash = Column(String(128))
+    
+    @property
+    def password(self):
+        raise AttributeError("Password is not a readable attribute")
+    
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
 
-    def __init__(self, name, email):
-        self.name = name
-        self.email = email
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return f"User {self.name} with email {self.email}"
@@ -53,6 +62,9 @@ def user():
         flash("You are not logged in!")
         return redirect(url_for("login"))
 
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+    pass
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
