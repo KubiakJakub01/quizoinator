@@ -13,7 +13,8 @@ from sqlalchemy import Column, Integer, String, Text
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Import forms
-from utils.forms import UserForm, LoginForm
+from utils.forms import UserForm, LoginForm, PostForm
+from utils.posts_utils import PostsUtils
 
 # Define the application configuration
 app = Flask(__name__)
@@ -62,6 +63,9 @@ def signup():
         email = form.email.data
         password = form.password.data
         found_user = Users.query.filter_by(name=name).first()
+        form.name.data = ""
+        form.email.data = ""
+        form.password.data = ""
         if found_user:
             flash("User already exists!")
             return redirect(url_for("login"))
@@ -155,6 +159,26 @@ def logout():
     return redirect(url_for("home"))
 
 
+@app.route("/post/add", methods=["POST", "GET"])
+@login_required
+def add_post():
+    """Add post to db"""
+    form = PostForm()
+    return posts_utils.add_post(form, author=current_user.name)
+
+@app.route("/post/view")
+@login_required
+def view_posts():
+    """View all posts in db"""
+    return posts_utils.view_posts()
+
+@app.route("/post/view/<int:id>", methods=["POST", "GET"])
+@login_required
+def view_post(id):
+    """View single post in db"""
+    return posts_utils.view_post(id)
+
+
 @app.route("/admin")
 def admin():
     """Admin page"""
@@ -204,6 +228,7 @@ class Posts(db.Model):
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
     title = Column(String(200), nullable=False, unique=True)
     content = Column(Text, nullable=False, unique=True)
+    author = Column(String(20), nullable=False)
     data_created = Column(db.DateTime, default=db.func.current_timestamp())
 
     def __repr__(self):
@@ -213,4 +238,5 @@ class Posts(db.Model):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+    posts_utils = PostsUtils(db, Posts)
     app.run(debug=True)
