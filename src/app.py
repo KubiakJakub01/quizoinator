@@ -3,7 +3,7 @@ from datetime import timedelta
 
 # Import flask and template operators
 from flask import Flask, redirect, url_for, render_template, session, flash, request
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
@@ -131,13 +131,18 @@ def update(id):
 def delete(id):
     """Delete user from db"""
     name_to_delete = Users.query.get_or_404(id)
-    try:
-        db.session.delete(name_to_delete)
-        db.session.commit()
-        flash("User deleted!", "info")
-        return redirect(url_for("user"))
-    except:
-        flash("There was an issue deleting your task", "error")
+    id = current_user._id
+    if id == name_to_delete._id:
+        try:
+            db.session.delete(name_to_delete)
+            db.session.commit()
+            flash("User deleted!", "info")
+            return redirect(url_for("user"))
+        except:
+            flash("There was an issue deleting your task", "error")
+            return redirect(url_for("user"))
+    else:
+        flash("You can't delete this profile!", "error")
         return redirect(url_for("user"))
 
 
