@@ -124,6 +124,21 @@ def update(id):
                                id=id)
 
 
+@app.route("/delete/<int:id>")
+@login_required
+def delete(id):
+    """Delete user from db"""
+    name_to_delete = Users.query.get_or_404(id)
+    try:
+        db.session.delete(name_to_delete)
+        db.session.commit()
+        flash("User deleted!", "info")
+        return redirect(url_for("user"))
+    except:
+        flash("There was an issue deleting your task", "error")
+        return redirect(url_for("user"))
+
+
 @app.route("/logout")
 @login_required
 def logout():
