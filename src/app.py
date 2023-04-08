@@ -7,7 +7,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text
 
 # Import password / encryption helper tools
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -196,6 +196,18 @@ class Users(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User {self.name} with email {self.email}"
+
+
+class Posts(db.Model):
+    """Posts model for sqlalchemy database"""
+
+    _id = Column("id", Integer, primary_key=True, autoincrement=True)
+    title = Column(String(200), nullable=False, unique=True)
+    content = Column(Text, nullable=False, unique=True)
+    data_created = Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"Post {self.title} with content {self.content}"
 
 
 if __name__ == "__main__":
