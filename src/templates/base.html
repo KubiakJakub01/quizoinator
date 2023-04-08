@@ -21,6 +21,14 @@
               <a class="nav-link" href="/user">User</a>
             </li>
             {% if current_user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Posts
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="/post/add">Add post</a>
+                <a class="dropdown-item" href="/post/view">View posts</a>
+                <a class="dropdown-item" href="#">Edit post</a>
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
             </li>
