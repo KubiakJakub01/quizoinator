@@ -118,6 +118,8 @@ def update(id):
                                    form=form,
                                    name_to_update=name_to_update)
     else:
+        form.name.data = name_to_update.name
+        form.email.data = name_to_update.email
         return render_template("update.html", 
                                form=form,
                                name_to_update=name_to_update,
