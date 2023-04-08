@@ -5,10 +5,12 @@
 
 {% for post in posts %}
 <div class="shadow p-3 mb-5 bg-white rounded">
+    {{ post._id }}
     <h2>{{ post.title }}<br/></h2>
     content: {{ post.content }}<br/>
     author: {{ post.author }}<br/>
     created: {{ post.data_created }}<br/><br/>
+    <a href="{{ url_for('view_post', id=post._id)}}" class="btn btn-primary">View</a>
 </div>
 {% endfor %}
 

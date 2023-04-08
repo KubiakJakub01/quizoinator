@@ -172,7 +172,7 @@ def view_posts():
     """View all posts in db"""
     return posts_utils.view_posts()
 
-@app.route("/post/view/<int:id>", methods=["POST", "GET"])
+@app.route("/post/view/<int:id>")
 @login_required
 def view_post(id):
     """View single post in db"""
