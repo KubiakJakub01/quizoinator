@@ -178,6 +178,12 @@ def view_post(id):
     """View single post in db"""
     return posts_utils.view_post(id)
 
+@app.route("/post/update/<int:id>", methods=["POST", "GET"])
+@login_required
+def update_post(id):
+    """Update post in db"""
+    form = PostForm()
+    return posts_utils.update_post(id, form, author=current_user.name)
 
 @app.route("/admin")
 def admin():

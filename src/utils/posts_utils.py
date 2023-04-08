@@ -21,10 +21,10 @@ class PostsUtils:
         post = self.Posts.query.get_or_404(id)
         return render_template("post.html", post=post)
 
-    def update_post(self, id, form, current_user):
+    def update_post(self, id, form, author):
         """Update post"""
         post_to_update = self.Posts.query.get_or_404(id)
-        if post_to_update.author != current_user:
+        if post_to_update.author != author:
             flash("You can't update this post!", "error")
             return redirect(url_for("view_posts"))
         if form.validate_on_submit():

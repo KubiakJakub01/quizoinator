@@ -24,8 +24,13 @@
 		<div>
 			{{ post.content }}
 		</div>
+        <br/>
+        {% if post.author == session['username'] %}
+            <a href="{{ url_for('update_post', id=post._id)}}" class="btn btn-primary">Edit post</a>
+        {% endif %}
+        <a href="/post/view" class="btn btn-primary">Go to blog</a>
 	</div>
-    <a href="/post/view" class="btn btn-primary">Go to blog</a>
+
 </body>
 </html>
 
