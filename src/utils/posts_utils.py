@@ -40,10 +40,10 @@ class PostsUtils:
             form.content.data = post_to_update.content
             return render_template("update_post.html", form=form, post=post_to_update)
 
-    def delete_post(self, id):
+    def delete_post(self, id, author):
         """Delete post"""
         post_to_delete = self.Posts.query.get_or_404(id)
-        if post_to_delete.author != self.current_user:
+        if post_to_delete.author != author:
             flash("You can't delete this post!", "error")
             return redirect(url_for("view_posts"))
         try:

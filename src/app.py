@@ -185,6 +185,12 @@ def update_post(id):
     form = PostForm()
     return posts_utils.update_post(id, form, author=current_user.name)
 
+@app.route("/post/delete/<int:id>")
+@login_required
+def delete_post(id):
+    """Delete post from db"""
+    return posts_utils.delete_post(id, author=current_user.name)
+
 @app.route("/admin")
 def admin():
     """Admin page"""
