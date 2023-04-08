@@ -15,6 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Import forms
 from utils.forms import UserForm, LoginForm, PostForm
 from utils.posts_utils import PostsUtils
+from utils.user_utils import UserUtils
 
 # Define the application configuration
 app = Flask(__name__)
@@ -54,28 +55,8 @@ def user():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Sign up page"""
-    name = None
-    email = None
-    password = None
     form = UserForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
-        password = form.password.data
-        found_user = Users.query.filter_by(name=name).first()
-        form.name.data = ""
-        form.email.data = ""
-        form.password.data = ""
-        if found_user:
-            flash("User already exists!")
-            return redirect(url_for("login"))
-        else:
-            usr = Users(name=name, email=email, password=password)
-            db.session.add(usr)
-            db.session.commit()
-            flash("User created!")
-            return redirect(url_for("login"))
-    return render_template("signup.html", form=form)
+    return user_utils.add_user(form)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -108,47 +89,19 @@ def login():
 def update(id):
     """Update user in db"""
     form = UserForm()
-    name_to_update = Users.query.get_or_404(id)
-    if request.method == "POST":
-        name_to_update.name = form.name.data
-        name_to_update.email = form.email.data
-        try:
-            db.session.commit()
-            flash("User updated!", "info")
-            return render_template("user.html")
-        except:
-            flash("There was an issue updating your task", "error")
-            return render_template("update.html", 
-                                   form=form,
-                                   name_to_update=name_to_update)
-    else:
-        form.name.data = name_to_update.name
-        form.email.data = name_to_update.email
-        return render_template("update.html", 
-                               form=form,
-                               name_to_update=name_to_update,
-                               id=id)
+    return user_utils.update_user(id, form)
 
 
 @app.route("/delete/<int:id>")
 @login_required
 def delete(id):
     """Delete user from db"""
-    name_to_delete = Users.query.get_or_404(id)
-    id = current_user._id
-    if id == name_to_delete._id:
-        try:
-            db.session.delete(name_to_delete)
-            db.session.commit()
-            flash("User deleted!", "info")
-            return redirect(url_for("user"))
-        except:
-            flash("There was an issue deleting your task", "error")
-            return redirect(url_for("user"))
-    else:
-        flash("You can't delete this profile!", "error")
-        return redirect(url_for("user"))
+    return user_utils.delete_user(id)
 
+@app.route("/view")
+def view():
+    """View all user in db"""
+    return render_template("view.html", users=user_utils.get_users())
 
 @app.route("/logout")
 @login_required
@@ -196,11 +149,6 @@ def admin():
     """Admin page"""
     return redirect(url_for("user", name="Admin!"))
 
-
-@app.route("/view")
-def view():
-    """View all user in db"""
-    return render_template("view.html", users=Users.query.all())
 
 
 class Users(db.Model, UserMixin):
@@ -251,4 +199,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     posts_utils = PostsUtils(db, Posts)
+    user_utils = UserUtils(db, Users)
     app.run(debug=True)

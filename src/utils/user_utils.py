@@ -48,16 +48,15 @@ class UserUtils:
                 return render_template("user.html")
             except:
                 flash("There was an issue updating your task", "error")
-                return render_template("update.html", 
-                                    form=form,
-                                    name_to_update=name_to_update)
+                return render_template(
+                    "update.html", form=form, name_to_update=name_to_update
+                )
         else:
             form.name.data = name_to_update.name
             form.email.data = name_to_update.email
-            return render_template("update.html", 
-                                form=form,
-                                name_to_update=name_to_update,
-                                id=id)
+            return render_template(
+                "update.html", form=form, name_to_update=name_to_update, id=id
+            )
 
     def delete_user(self, id):
         """Delete user from db"""
@@ -85,4 +84,3 @@ class UserUtils:
         """Get all users from db"""
         users = self.Users.query.all()
         return users
-    
