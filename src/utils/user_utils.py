@@ -1,6 +1,7 @@
 """
 Module for user related functions
 """
+from pathlib import Path
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user
 
@@ -8,9 +9,10 @@ from flask_login import current_user
 class UserUtils:
     """Class for user related functions"""
 
-    def __init__(self, db, Users):
+    def __init__(self, db, Users, user_dir):
         self.db = db
         self.Users = Users
+        self.user_dir = Path(user_dir)
 
     def add_user(self, form):
         """Sign up page"""
@@ -34,7 +36,7 @@ class UserUtils:
                 self.db.session.commit()
                 flash("User created!")
                 return redirect(url_for("login"))
-        return render_template("signup.html", form=form)
+        return render_template(str(self.user_dir / "signup.html"), form=form)
 
     def update_user(self, id, form):
         """Update user in db"""
@@ -45,17 +47,17 @@ class UserUtils:
             try:
                 self.db.session.commit()
                 flash("User updated!", "info")
-                return render_template("user.html")
+                return render_template(str(self.user_dir / "user.html"))
             except:
                 flash("There was an issue updating your task", "error")
                 return render_template(
-                    "update.html", form=form, name_to_update=name_to_update
+                    str(self.user_dir / "update.html"), form=form, name_to_update=name_to_update
                 )
         else:
             form.name.data = name_to_update.name
             form.email.data = name_to_update.email
             return render_template(
-                "update.html", form=form, name_to_update=name_to_update, id=id
+                str(self.user_dir / "update.html"), form=form, name_to_update=name_to_update, id=id
             )
 
     def delete_user(self, id):

@@ -50,14 +50,14 @@ def base():
 @app.route("/")
 def home():
     """Home page"""
-    return render_template("index.html")
+    return render_template("base/index.html")
 
 
 @app.route("/user")
 @login_required
 def user():
     """User page"""
-    return render_template("user.html")
+    return render_template("user/user.html")
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -89,7 +89,7 @@ def login():
                 return redirect(url_for("login"))
         flash("This user doesn't exist!", "error")
         return redirect(url_for("login"))
-    return render_template("login.html", form=form)
+    return render_template("user/login.html", form=form)
 
 
 @app.route("/update/<int:id>", methods=["POST", "GET"])
@@ -213,6 +213,6 @@ class Posts(db.Model):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    posts_utils = PostsUtils(db, Posts)
-    user_utils = UserUtils(db, Users)
+    user_utils = UserUtils(db, Users, "user")
+    posts_utils = PostsUtils(db, Posts, "blog")
     app.run(debug=True)
