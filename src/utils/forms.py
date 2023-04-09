@@ -42,5 +42,5 @@ class PostForm(FlaskForm):
 class SearchForm(FlaskForm):
     """Search form"""
 
-    search = StringField("Search", validators=[DataRequired()])
+    searched = StringField("Search", validators=[DataRequired()])
     submit = SubmitField("Submit")
