@@ -70,3 +70,12 @@ class PostsUtils:
             return redirect(url_for("view_posts"))
         else:
             return render_template("add_post.html", form=form)
+
+    def search_post(self, form):
+        """Search post"""
+        if form.validate_on_submit():
+            search = form.searched.data
+            posts = self.Posts.query.filter(self.Posts.content.like('%' + search + '%')).all()
+            return render_template("search_post.html", posts=posts, search=search)
+        else:
+             return redirect(url_for("view_posts"))
