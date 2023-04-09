@@ -17,6 +17,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from utils.forms import UserForm, LoginForm, PostForm, SearchForm
 from utils.posts_utils import PostsUtils
 from utils.user_utils import UserUtils
+from utils.admin_utils import AdminUtils
 
 # Define the application configuration
 app = Flask(__name__)
@@ -44,7 +45,8 @@ def load_user(user_id):
 def base():
     """Base context for all templates"""
     form = SearchForm()
-    return dict(form=form)
+    admin_list = admin_utils.get_admins
+    return dict(form=form, admin_list=admin_list)
 
 
 @app.route("/")
@@ -106,11 +108,6 @@ def delete(id):
     """Delete user from db"""
     return user_utils.delete_user(id)
 
-@app.route("/view")
-def view():
-    """View all user in db"""
-    return render_template("view.html", users=user_utils.get_users())
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -160,11 +157,24 @@ def search_post():
     return posts_utils.search_post(form)
 
 @app.route("/admin")
+@login_required
 def admin():
     """Admin page"""
-    return redirect(url_for("user", name="Admin!"))
+    id = current_user._id
+    return admin_utils.admin(id)
 
+@app.route("/admin/view")
+@login_required
+def view():
+    """View all user in db"""
+    id = current_user._id
+    return admin_utils.view_users(id)
 
+@app.route("/admin/add_admin", methods=["POST", "GET"])
+@login_required
+def add_admin():
+    """Add admin to db"""
+    return redirect(url_for("admin"))
 
 class Users(db.Model, UserMixin):
     """User model for sqlalchemy database"""
@@ -212,9 +222,25 @@ class Posts(db.Model):
         return f"Post {self.title} with content {self.content}"
 
 
+class Admin(db.Model):
+    """Admin model for sqlalchemy database"""
+
+    admin_id = Column("id", Integer, primary_key=True, autoincrement=True)
+    # Foreign key to Users
+    user_id = Column(Integer, ForeignKey("users.id"))
+    # Foreign key to person who added admin
+    added_by = Column(Integer, ForeignKey("users.id"))
+    # reason for adding admin
+    reason = Column(String(200), nullable=False)
+    # Date admin was added
+    date_added = Column(db.DateTime, default=db.func.current_timestamp())
+
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+    admin_utils = AdminUtils(db, Admin,  Users, Posts, "admin")
     user_utils = UserUtils(db, Users, "user")
     posts_utils = PostsUtils(db, Posts, "blog")
     app.run(debug=True)
