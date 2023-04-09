@@ -12,8 +12,7 @@ class AdminUtils:
         self.Admin = Admin
         self.User = User
         self.Posts = Posts
-        # self.admin_list = [admin.id for admin in self.Admin.query.all()]
-        self.admin_list = [1]
+        self.admin_list = [admin.user_id for admin in self.Admin.query.all()]
         self.admin_dir = Path(admin_dir)
 
     @property
@@ -69,3 +68,8 @@ class AdminUtils:
                 return redirect(url_for("admin"))
         return render_template(str(self.admin_dir / "add_admin.html"), form=form, users=users)
 
+    @_admin_required
+    def view_admins(self, id):
+        """View admins"""
+        admins = self.Admin.query.all()
+        return render_template(str(self.admin_dir / "view_admins.html"), admins=admins)

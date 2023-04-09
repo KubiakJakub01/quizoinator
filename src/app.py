@@ -165,7 +165,7 @@ def admin():
 
 @app.route("/admin/view")
 @login_required
-def view():
+def view_users():
     """View all user in db"""
     id = current_user._id
     return admin_utils.view_users(id)
@@ -177,6 +177,13 @@ def add_admin():
     id = current_user._id
     form = AdminForm()
     return admin_utils.add_admin(id, form)
+
+@app.route("/admin/view_admin")
+@login_required
+def view_admins():
+    """View all admins in db"""
+    id = current_user._id
+    return admin_utils.view_admins(id)
 
 class Users(db.Model, UserMixin):
     """User model for sqlalchemy database"""
@@ -242,7 +249,7 @@ class Admin(db.Model):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    admin_utils = AdminUtils(db, Admin,  Users, Posts, "admin")
+        admin_utils = AdminUtils(db, Admin,  Users, Posts, "admin")
     user_utils = UserUtils(db, Users, "user")
     posts_utils = PostsUtils(db, Posts, "blog")
     app.run(debug=True)
