@@ -48,3 +48,24 @@ class AdminUtils:
     def admin(self, id):
         """Admin"""
         return render_template(str(self.admin_dir / "admin.html"))
+
+    @_admin_required
+    def add_admin(self, id, form):
+        """Add admin"""
+        users = self.User.query.all()
+        if form.validate_on_submit():
+            if self.Admin.query.filter_by(user_id=form.user_id.data).first():
+                flash("Admin already exists!", "error")
+                return redirect(url_for("admin"))
+            else:
+                admin = self.Admin(user_id=form.user_id.data,
+                                   added_by=id,
+                                   reason=form.reason.data)
+                form.user_id.data = ""
+                form.reason.data = ""
+                self.db.session.add(admin)
+                self.db.session.commit()
+                flash("Admin added!", "info")
+                return redirect(url_for("admin"))
+        return render_template(str(self.admin_dir / "add_admin.html"), form=form, users=users)
+

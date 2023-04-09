@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{user._id}}</td>
+                    <td>{{user.name}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h1 class="mt-5 mb-3">User</h1>
+    <form method="POST" class="mb-5">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+          {{ form.user_id.label }} {{ form.user_id(class="form-control") }}
+      </div>
+      <div class="form-group">
+          {{ form.reason.label }} {{ form.reason(class="form-control", rows=5) }}
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Import forms
-from utils.forms import UserForm, LoginForm, PostForm, SearchForm
+from utils.forms import UserForm, LoginForm, PostForm, SearchForm, AdminForm
 from utils.posts_utils import PostsUtils
 from utils.user_utils import UserUtils
 from utils.admin_utils import AdminUtils
@@ -174,7 +174,9 @@ def view():
 @login_required
 def add_admin():
     """Add admin to db"""
-    return redirect(url_for("admin"))
+    id = current_user._id
+    form = AdminForm()
+    return admin_utils.add_admin(id, form)
 
 class Users(db.Model, UserMixin):
     """User model for sqlalchemy database"""
