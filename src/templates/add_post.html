@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+
     <div class="container">
       <h1 class="mt-5 mb-3">Add post</h1>
       <form method="POST" class="mb-5">
@@ -12,5 +13,8 @@
         </div>
         <button type="submit" class="btn btn-primary">Add</button>
       </form>
+      {{ ckeditor.load() }}
+      {{ ckeditor.config(name='content', language='en', toolbar='full') }}
     </div>
+
 {% endblock %}

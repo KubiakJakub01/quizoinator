@@ -4,6 +4,7 @@ from datetime import timedelta
 # Import flask and template operators
 from flask import Flask, redirect, url_for, render_template, session, flash, request
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_ckeditor import CKEditor
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +20,7 @@ from utils.user_utils import UserUtils
 
 # Define the application configuration
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 app.secret_key = "mysecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
