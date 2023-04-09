@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}View All Users {% endblock %}
+{% block content %}
+    <h1>View All admins</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">admin ID</th>
+                <th scope="col">user ID</th>
+                <th scope="col">added by</th>
+                <th scope="col">reason</th>
+                <th scope="col">date_added</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for admin in admins %}
+                <tr>
+                    <td>{{admin.admin_id}}</td>
+                    <td>{{admin.user_id}}</td>
+                    <td>{{admin.added_by}}</td>
+                    <td>{{admin.reason}}</td>
+                    <td>{{admin.date_added}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
