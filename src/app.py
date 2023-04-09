@@ -13,7 +13,7 @@ from sqlalchemy import Column, Integer, String, Text
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Import forms
-from utils.forms import UserForm, LoginForm, PostForm
+from utils.forms import UserForm, LoginForm, PostForm, SearchForm
 from utils.posts_utils import PostsUtils
 from utils.user_utils import UserUtils
 
@@ -26,7 +26,7 @@ app.permanent_session_lifetime = timedelta(minutes=5)
 
 # Define the database object which is imported
 db = SQLAlchemy(app)
-
+ 
 # Define login manager
 login_menager = LoginManager()
 login_menager.init_app(app)
@@ -37,6 +37,12 @@ login_menager.login_view = "login"
 def load_user(user_id):
     """Load user from database"""
     return Users.query.get(int(user_id))
+
+@app.context_processor
+def base():
+    """Base context for all templates"""
+    form = SearchForm()
+    return dict(form=form)
 
 
 @app.route("/")
@@ -143,6 +149,13 @@ def update_post(id):
 def delete_post(id):
     """Delete post from db"""
     return posts_utils.delete_post(id, author=current_user.name)
+
+@app.route("/post/search", methods=["POST"])
+@login_required
+def search_post():
+    """Search post in db"""
+    form = SearchForm()
+    return posts_utils.search_post(form)
 
 @app.route("/admin")
 def admin():
