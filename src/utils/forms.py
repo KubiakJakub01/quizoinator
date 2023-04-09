@@ -45,3 +45,11 @@ class SearchForm(FlaskForm):
 
     searched = StringField("Search", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+
+class AdminForm(FlaskForm):
+    """Admin form"""
+
+    user_id = StringField("User ID", validators=[DataRequired()])
+    reason = StringField("Reason", widget=TextArea())
+    submit = SubmitField("Submit")
