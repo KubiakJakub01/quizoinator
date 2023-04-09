@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hi admin!</h1>
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Username: </strong> {{ current_user.name }}</li>
+        <li class="list-group-item"><strong>Email: </strong> {{ current_user.email }}</li>
+        <li class="list-group-item"><strong>Created: </strong> {{ current_user.data_created }}</li>
+        </ul>
+        <a href="{{ url_for('view', id=current_user._id)}}" class="btn btn-primary">View users</a>
+        <a href="{{ url_for('add_admin', id=current_user._id)}}" class="btn btn-primary btn-danger">Add admin</a>
+    </div>
+{% endblock %}
