@@ -23,10 +23,10 @@ class PostsUtils:
         post = self.Posts.query.get_or_404(id)
         return render_template(str(self.blog_dir / "post.html"), post=post)
 
-    def update_post(self, id, form, author):
+    def update_post(self, id, form, author_id):
         """Update post"""
         post_to_update = self.Posts.query.get_or_404(id)
-        if post_to_update.author != author:
+        if post_to_update.author_id != author_id:
             flash("You can't update this post!", "error")
             return redirect(url_for("view_posts"))
         if form.validate_on_submit():
@@ -42,10 +42,10 @@ class PostsUtils:
             form.content.data = post_to_update.content
             return render_template(str(self.blog_dir / "update_post.html"), form=form, post=post_to_update)
 
-    def delete_post(self, id, author):
+    def delete_post(self, id, author_id):
         """Delete post"""
         post_to_delete = self.Posts.query.get_or_404(id)
-        if post_to_delete.author != author:
+        if post_to_delete.author_id != author_id:
             flash("You can't delete this post!", "error")
             return redirect(url_for("view_posts"))
         try:
@@ -57,13 +57,12 @@ class PostsUtils:
             flash("There was an issue deleting your post", "error")
             return redirect(url_for("view_posts"))
 
-    def add_post(self, form, author):
+    def add_post(self, form, author_id):
         """Add post"""
         if form.validate_on_submit():
             title = form.title.data
             content = form.content.data
-            author = author
-            post = self.Posts(title=title, content=content, author=author)
+            post = self.Posts(title=title, content=content, author_id=author_id)
             form.title.data = ""
             form.content.data = ""
             self.db.session.add(post)

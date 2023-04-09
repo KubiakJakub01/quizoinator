@@ -8,7 +8,7 @@ from flask_ckeditor import CKEditor
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
 
 # Import password / encryption helper tools
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -125,7 +125,7 @@ def logout():
 def add_post():
     """Add post to db"""
     form = PostForm()
-    return posts_utils.add_post(form, author=current_user.name)
+    return posts_utils.add_post(form, author_id=current_user._id)
 
 @app.route("/post/view")
 @login_required
@@ -144,13 +144,13 @@ def view_post(id):
 def update_post(id):
     """Update post in db"""
     form = PostForm()
-    return posts_utils.update_post(id, form, author=current_user.name)
+    return posts_utils.update_post(id, form, author_id=current_user._id)
 
 @app.route("/post/delete/<int:id>")
 @login_required
 def delete_post(id):
     """Delete post from db"""
-    return posts_utils.delete_post(id, author=current_user.name)
+    return posts_utils.delete_post(id, author_id=current_user._id)
 
 @app.route("/post/search", methods=["POST"])
 @login_required
@@ -174,6 +174,7 @@ class Users(db.Model, UserMixin):
     email = Column(String(20), nullable=False, unique=True)
     password_hash = Column(String(128))
     data_created = Column(db.DateTime, default=db.func.current_timestamp())
+    posts = db.relationship("Posts", backref="author", lazy=True)
 
     @property
     def password(self):
@@ -194,7 +195,7 @@ class Users(db.Model, UserMixin):
         return self._id
 
     def __repr__(self):
-        return f"User {self.name} with email {self.email}"
+        return self.name
 
 
 class Posts(db.Model):
@@ -203,8 +204,9 @@ class Posts(db.Model):
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
     title = Column(String(200), nullable=False, unique=True)
     content = Column(Text, nullable=False, unique=True)
-    author = Column(String(20), nullable=False)
     data_created = Column(db.DateTime, default=db.func.current_timestamp())
+    # Foreign key to Users
+    author_id = Column(Integer, ForeignKey("users.id"))
 
     def __repr__(self):
         return f"Post {self.title} with content {self.content}"
