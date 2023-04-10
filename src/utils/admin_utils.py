@@ -83,6 +83,9 @@ class AdminUtils:
     def delete_user(self, id, user_id):
         """Delete user"""
         user_to_delete = self.User.query.get_or_404(user_id)
+        if user_to_delete._id in self.admin_list:
+            flash("You cannot delete an admin!", "error")
+            return redirect(url_for("view_users"))
         try:
             self.db.session.delete(user_to_delete)
             self.db.session.commit()
