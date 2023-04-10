@@ -15,7 +15,7 @@ from src import (
 )
 
 # Import models
-from src.models import Users, Posts, Admin, Comments
+from src.models import Users, Posts, Admin, Comments, PostsLikes
 
 # Import utils
 from src.utils.forms import UserForm, LoginForm, PostForm, SearchForm, AdminForm, CommentForm
@@ -152,34 +152,40 @@ def search_post():
     form = SearchForm()
     return posts_utils.search_post(form)
 
+
+@app.route("/post/like/<int:id>")
+@login_required
+def like_post(id):
+    """Like post"""
+    return posts_utils.like_post(id, current_user._id)
+
+
 @app.route("/post/comment/<int:id>", methods=["POST"])
 @login_required
 def add_comment(id):
     """Add comment to post"""
     form = CommentForm()
-    return comment_utils.add_comment(id, form)
+    return comment_utils.add_comment(id, form, current_user._id)
 
 
 @app.route("/post/comment/delete/<int:id>")
 @login_required
 def delete_comment(id):
     """Delete comment from post"""
-    return comment_utils.delete_comment(id)
+    return comment_utils.delete_comment(id, current_user._id)
 
 @app.route("/admin")
 @login_required
 def admin():
     """Admin page"""
-    id = current_user._id
-    return admin_utils.admin(id)
+    return admin_utils.admin(current_user._id)
 
 
 @app.route("/admin/view")
 @login_required
 def view_users():
     """View all user in db"""
-    id = current_user._id
-    return admin_utils.view_users(id)
+    return admin_utils.view_users(current_user._id)
 
 
 @app.route("/admin/add_admin", methods=["POST", "GET"])
@@ -225,5 +231,5 @@ if __name__ == "__main__":
         admin_utils = AdminUtils(db, Admin, Users, Posts, "admin")
     user_utils = UserUtils(db, Users, "user")
     comment_utils = CommentsUtils(db, Comments, "blog")
-    posts_utils = PostsUtils(db, Posts, "blog")
+    posts_utils = PostsUtils(db, Posts, PostsLikes, "blog")
     app.run(debug=True)
