@@ -21,7 +21,8 @@ class PostsUtils:
     def view_post(self, id):
         """View post"""
         post = self.Posts.query.get_or_404(id)
-        return render_template(str(self.blog_dir / "post.html"), post=post)
+        return render_template(str(self.blog_dir / "post.html"), 
+                               post=post)
 
     def update_post(self, id, form, author_id):
         """Update post"""
