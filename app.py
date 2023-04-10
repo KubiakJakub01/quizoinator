@@ -44,12 +44,17 @@ def home():
     """Home page"""
     return render_template("base/index.html")
 
-
-@app.route("/user")
+@app.route("/user/home")
 @login_required
-def user():
+def user_home():
     """User page"""
-    return render_template("user/user.html")
+    return user_utils.user_home()
+
+@app.route("/user/<int:id>")
+@login_required
+def user(id):
+    """User page"""
+    return user_utils.user(id)
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -75,7 +80,7 @@ def login():
                 session.permanent = True
                 session["user"] = name
                 flash("Logged in successfully!", "info")
-                return redirect(url_for("user"))
+                return redirect(url_for("user_home"))
             else:
                 flash("Invalid credentials!", "error")
                 return redirect(url_for("login"))
@@ -159,6 +164,12 @@ def like_post(id):
     """Like post"""
     return posts_utils.like_post(id, current_user._id)
 
+
+@app.route("/post/who_liked/<int:id>")
+@login_required
+def who_liked(id):
+    """Who liked post"""
+    return posts_utils.view_who_liked_post(id)
 
 @app.route("/post/comment/<int:id>", methods=["POST"])
 @login_required

@@ -106,3 +106,11 @@ class PostsUtils:
         self.db.session.commit()
         flash("Post liked!", "info")
         return redirect(url_for("view_posts"))
+
+    def view_who_liked_post(self, id):
+        """View who liked post"""
+        post = self.Posts.query.get_or_404(id)
+        post_likes = self.PostsLikes.query.filter_by(post_id=id).all()
+        return render_template(
+            str(self.blog_dir / "who_liked_post.html"), post=post, post_likes=post_likes
+        )
