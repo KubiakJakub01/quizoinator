@@ -4,6 +4,7 @@ Module for admin utilities
 from pathlib import Path
 from flask import render_template, redirect, url_for, flash
 
+
 class AdminUtils:
     """Admin utils"""
 
@@ -35,6 +36,7 @@ class AdminUtils:
             else:
                 flash("You are not an admin!", "error")
                 return redirect(url_for("home"))
+
         return wrapper
 
     @_admin_required
@@ -42,7 +44,7 @@ class AdminUtils:
         """View users"""
         users = self.User.query.all()
         return render_template(str(self.admin_dir / "view.html"), users=users)
-    
+
     @_admin_required
     def admin(self, id):
         """Admin"""
@@ -57,19 +59,35 @@ class AdminUtils:
                 flash("Admin already exists!", "error")
                 return redirect(url_for("admin"))
             else:
-                admin = self.Admin(user_id=form.user_id.data,
-                                   added_by=id,
-                                   reason=form.reason.data)
+                admin = self.Admin(
+                    user_id=form.user_id.data, added_by=id, reason=form.reason.data
+                )
                 form.user_id.data = ""
                 form.reason.data = ""
                 self.db.session.add(admin)
                 self.db.session.commit()
+                self.admin_list.append(admin.user_id)
                 flash("Admin added!", "info")
                 return redirect(url_for("admin"))
-        return render_template(str(self.admin_dir / "add_admin.html"), form=form, users=users)
+        return render_template(
+            str(self.admin_dir / "add_admin.html"), form=form, users=users
+        )
 
     @_admin_required
     def view_admins(self, id):
         """View admins"""
         admins = self.Admin.query.all()
         return render_template(str(self.admin_dir / "view_admins.html"), admins=admins)
+
+    @_admin_required
+    def delete_user(self, id, user_id):
+        """Delete user"""
+        user_to_delete = self.User.query.get_or_404(user_id)
+        try:
+            self.db.session.delete(user_to_delete)
+            self.db.session.commit()
+            flash("User deleted!", "info")
+            return redirect(url_for("view_users"))
+        except:
+            flash("There was an issue deleting your user", "error")
+            return redirect(url_for("view_users"))

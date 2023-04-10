@@ -1,9 +1,12 @@
 """Module with database models"""
 from . import db
+
 # Import flask_login
 from flask_login import UserMixin
+
 # Import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
+
 # Import password / encryption helper tools
 from werkzeug.security import generate_password_hash, check_password_hash
 

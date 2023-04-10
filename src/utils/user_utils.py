@@ -51,13 +51,18 @@ class UserUtils:
             except:
                 flash("There was an issue updating your task", "error")
                 return render_template(
-                    str(self.user_dir / "update.html"), form=form, name_to_update=name_to_update
+                    str(self.user_dir / "update.html"),
+                    form=form,
+                    name_to_update=name_to_update,
                 )
         else:
             form.name.data = name_to_update.name
             form.email.data = name_to_update.email
             return render_template(
-                str(self.user_dir / "update.html"), form=form, name_to_update=name_to_update, id=id
+                str(self.user_dir / "update.html"),
+                form=form,
+                name_to_update=name_to_update,
+                id=id,
             )
 
     def delete_user(self, id):

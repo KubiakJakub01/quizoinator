@@ -40,7 +40,9 @@ class PostsUtils:
         else:
             form.title.data = post_to_update.title
             form.content.data = post_to_update.content
-            return render_template(str(self.blog_dir / "update_post.html"), form=form, post=post_to_update)
+            return render_template(
+                str(self.blog_dir / "update_post.html"), form=form, post=post_to_update
+            )
 
     def delete_post(self, id, author_id):
         """Delete post"""
@@ -76,7 +78,11 @@ class PostsUtils:
         """Search post"""
         if form.validate_on_submit():
             search = form.searched.data
-            posts = self.Posts.query.filter(self.Posts.content.like('%' + search + '%')).all()
-            return render_template(str(self.blog_dir / "search_post.html"), posts=posts, search=search)
+            posts = self.Posts.query.filter(
+                self.Posts.content.like("%" + search + "%")
+            ).all()
+            return render_template(
+                str(self.blog_dir / "search_post.html"), posts=posts, search=search
+            )
         else:
-             return redirect(url_for("view_posts"))
+            return redirect(url_for("view_posts"))
