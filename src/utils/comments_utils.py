@@ -29,11 +29,13 @@ class CommentsUtils:
             self.db.session.commit()
             flash("Comment added!", "success")
             return redirect(url_for("view_post", id=id))
-        # return render_template(str(self.comments_dir / "add.html"), form=form)
         return redirect(url_for("view_post", id=id))
 
     def update_comment(self, id, form):
         """Update comment in db"""
+        if current_user._id != self.Comments.query.filter_by(_id=id).first().author_id:
+            flash("You can't update this comment!", "error")
+            return redirect(url_for("view_posts"))
         comment = self.Comments.query.filter_by(_id=id).first()
         if form.validate_on_submit():
             comment.content = form.content.data
@@ -45,6 +47,9 @@ class CommentsUtils:
 
     def delete_comment(self, id):
         """Delete comment from db"""
+        if current_user._id != self.Comments.query.filter_by(_id=id).first().author_id:
+            flash("You can't delete this comment!", "error")
+            return redirect(url_for("view_posts"))
         comment = self.Comments.query.filter_by(_id=id).first()
         self.db.session.delete(comment)
         self.db.session.commit()

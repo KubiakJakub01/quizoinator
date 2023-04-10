@@ -160,6 +160,12 @@ def add_comment(id):
     return comment_utils.add_comment(id, form)
 
 
+@app.route("/post/comment/delete/<int:id>")
+@login_required
+def delete_comment(id):
+    """Delete comment from post"""
+    return comment_utils.delete_comment(id)
+
 @app.route("/admin")
 @login_required
 def admin():
