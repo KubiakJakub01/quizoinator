@@ -15,13 +15,14 @@ from src import (
 )
 
 # Import models
-from src.models import Users, Posts, Admin
+from src.models import Users, Posts, Admin, Comments
 
 # Import utils
-from src.utils.forms import UserForm, LoginForm, PostForm, SearchForm, AdminForm
+from src.utils.forms import UserForm, LoginForm, PostForm, SearchForm, AdminForm, CommentForm
 from src.utils.posts_utils import PostsUtils
 from src.utils.user_utils import UserUtils
 from src.utils.admin_utils import AdminUtils
+from src.utils.comments_utils import CommentsUtils
 
 
 @login_menager.user_loader
@@ -151,6 +152,13 @@ def search_post():
     form = SearchForm()
     return posts_utils.search_post(form)
 
+@app.route("/post/comment/<int:id>", methods=["POST"])
+@login_required
+def add_comment(id):
+    """Add comment to post"""
+    form = CommentForm()
+    return comment_utils.add_comment(id, form)
+
 
 @app.route("/admin")
 @login_required
@@ -210,5 +218,6 @@ if __name__ == "__main__":
         db.create_all()
         admin_utils = AdminUtils(db, Admin, Users, Posts, "admin")
     user_utils = UserUtils(db, Users, "user")
+    comment_utils = CommentsUtils(db, Comments, "blog")
     posts_utils = PostsUtils(db, Posts, "blog")
     app.run(debug=True)
