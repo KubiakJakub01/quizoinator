@@ -23,6 +23,7 @@ from src.utils.posts_utils import PostsUtils
 from src.utils.user_utils import UserUtils
 from src.utils.admin_utils import AdminUtils
 from src.utils.comments_utils import CommentsUtils
+from src.users import users
 
 
 @login_menager.user_loader
@@ -43,74 +44,6 @@ def base():
 def home():
     """Home page"""
     return render_template("base/index.html")
-
-@app.route("/user/home")
-@login_required
-def user_home():
-    """User page"""
-    return user_utils.user_home()
-
-@app.route("/user/<int:id>")
-@login_required
-def user(id):
-    """User page"""
-    return user_utils.user(id)
-
-
-@app.route("/signup", methods=["POST", "GET"])
-def signup():
-    """Sign up page"""
-    form = UserForm()
-    return user_utils.add_user(form)
-
-
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    """Login page"""
-    name = None
-    password = None
-    form = LoginForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        password = form.password.data
-        found_user = Users.query.filter_by(name=name).first()
-        if found_user:
-            if found_user.verify_password(password):
-                login_user(found_user)
-                session.permanent = True
-                session["user"] = name
-                flash("Logged in successfully!", "info")
-                return redirect(url_for("user_home"))
-            else:
-                flash("Invalid credentials!", "error")
-                return redirect(url_for("login"))
-        flash("This user doesn't exist!", "error")
-        return redirect(url_for("login"))
-    return render_template("user/login.html", form=form)
-
-
-@app.route("/update/<int:id>", methods=["POST", "GET"])
-@login_required
-def update(id):
-    """Update user in db"""
-    form = UserForm()
-    return user_utils.update_user(id, form)
-
-
-@app.route("/delete/<int:id>")
-@login_required
-def delete(id):
-    """Delete user from db"""
-    return user_utils.delete_user(id)
-
-
-@app.route("/logout")
-@login_required
-def logout():
-    """Logout page"""
-    flash(f"You have been logged out", "info")
-    logout_user()
-    return redirect(url_for("home"))
 
 
 @app.route("/post/add", methods=["POST", "GET"])
@@ -237,10 +170,12 @@ if __name__ == "__main__":
     login_menager = init_login_manager(app)
     ckeditor = init_ckeditor(app)
 
+    app.register_blueprint(users, url_prefix="/user")
+
     with app.app_context():
         db.create_all()
         admin_utils = AdminUtils(db, Admin, Users, Posts, "admin")
-    user_utils = UserUtils(db, Users, "user")
+    # user_utils = UserUtils(db, Users, "user")
     comment_utils = CommentsUtils(db, Comments, "blog")
     posts_utils = PostsUtils(db, Posts, PostsLikes, "blog")
     app.run(debug=True)
