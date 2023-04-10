@@ -3,13 +3,13 @@
 <h1>Post</h1>
 <br/>
 <div class="shadow p-3 mb-5 bg-white rounded">
-    <h2><a href="{{ url_for('view_post', id=post._id)}}">{{ post.title }}</a><br/></h2>
+    <h2><a href="{{ url_for('blog.view_post', id=post._id)}}">{{ post.title }}</a><br/></h2>
 </div>
 <h1>Liked by:</h1>
 <br/>
 {% for like in post_likes %}
 <div class="shadow p-3 mb-5 bg-white rounded">
-    <h2><a href="{{ url_for('user', id=like.author_id)}}">{{ like.author }}</a><br/></h2>
+    <h2><a href="{{ url_for('users.user', id=like.author_id)}}">{{ like.author }}</a><br/></h2>
 </div>
 {% endfor %}
 

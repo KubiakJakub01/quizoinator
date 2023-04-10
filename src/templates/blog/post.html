@@ -7,7 +7,7 @@
 		<div class="card-text">
 			{{ post.content|safe }}
 		</div>
-		<form  method="POST" action="{{ url_for('add_comment', id=post._id) }}" class="d-flex">
+		<form  method="POST" action="{{ url_for('blog.add_comment', id=post._id) }}" class="d-flex">
 			{{ form.hidden_tag() }}
 			<input type="text" class="form-control" placeholder="Add a comment" name="comment">
 			<button class="btn btn-outline-secondary" type="submit">Add</button>
@@ -29,7 +29,7 @@
 						  <p>{{ comment.comment }}</p>
 						  <div class="d-flex justify-content-between align-items-center">
 							{% if comment.author_id == current_user._id %}
-								<a href="{{ url_for('delete_comment', id=comment._id)}}" class="link-muted"><i class="fas fa-trash me-1"></i> Delete</a>
+								<a href="{{ url_for('blog.delete_comment', id=comment._id)}}" class="link-muted"><i class="fas fa-trash me-1"></i> Delete</a>
 							{% endif %}
 						  </div>
 						</div>
@@ -40,10 +40,10 @@
 		  </section>
 
         {% if post.author_id == current_user._id %}
-            <a href="{{ url_for('update_post', id=post._id)}}" class="btn btn-primary">Edit post</a>
-            <a href="{{ url_for('delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>
+            <a href="{{ url_for('blog.update_post', id=post._id)}}" class="btn btn-primary">Edit post</a>
+            <a href="{{ url_for('blog.delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>
         {% endif %}
-        <a href="/post/view" class="btn btn-primary">Go to blog</a>
+        <a href="{{ url_for('blog.view_posts') }}" class="btn btn-primary">Go to blog</a>
 	</div>
 </body>
 {% endblock %}

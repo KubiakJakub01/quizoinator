@@ -1,7 +1,7 @@
 """Blueprint for user routes."""
 import os
-from flask import Blueprint, render_template, flash, redirect, url_for, request, session
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import Blueprint
+from flask_login import login_required
 from src import db
 from src.utils.user_utils import UserUtils
 from src.models import Users

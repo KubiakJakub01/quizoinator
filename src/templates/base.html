@@ -26,10 +26,10 @@
                 Blog
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="/post/add">Add post</a>
-                <a class="dropdown-item" href="/post/view">View posts</a>
+                <a class="dropdown-item" href="{{ url_for('blog.add_post') }}">Add post</a>
+                <a class="dropdown-item" href="{{ url_for('blog.view_posts') }}">View posts</a>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('users.logout')}}">Logout</a>
+              <a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a>
             </li>
             {% if current_user._id in admin_list %}
             <li class="nav-item">
@@ -38,10 +38,10 @@
             {% endif %}
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('users.login')}}">Login</a>
+              <a class="nav-link" href="{{ url_for('users.login') }}">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('users.signup')}}">Signup</a>
+              <a class="nav-link" href="{{ url_for('users.signup') }}">Signup</a>
             </li>
             {% endif %}
           </ul>
