@@ -21,6 +21,7 @@ class Users(db.Model, UserMixin):
     data_created = Column(db.DateTime, default=db.func.current_timestamp())
     posts = db.relationship("Posts", backref="author", lazy=True)
     comments = db.relationship("Comments", backref="author", lazy=True)
+    likes = db.relationship("PostsLikes", backref="author", lazy=True)
 
     @property
     def password(self):
@@ -54,6 +55,7 @@ class Posts(db.Model):
     # Foreign key to Users
     author_id = Column(Integer, ForeignKey("users.id"))
     comments = db.relationship("Comments", backref="post", lazy=True)
+    likes = db.relationship("PostsLikes", backref="post", lazy=True)
 
     def __repr__(self):
         return f"Post {self.title} with content {self.content}"
@@ -86,3 +88,17 @@ class Comments(db.Model):
 
     def __repr__(self):
         return f"Comment {self.comment} by {self.author} on post {self.post_id}"
+
+
+class PostsLikes(db.Model):
+    """Posts likes model for sqlalchemy database"""
+
+    _id = Column("id", Integer, primary_key=True, autoincrement=True)
+    # Foreign key to Posts
+    post_id = Column(Integer, ForeignKey("posts.id"))
+    # Foreign key to Users
+    author_id = Column(Integer, ForeignKey("users.id"))
+    date_liked = Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"User {self.author_id} liked post {self.post_id}"
