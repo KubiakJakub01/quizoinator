@@ -25,7 +25,7 @@
         </a>
     </div>
     {% if current_user._id in admin_list %}
-        <a href="{{ url_for('admin_delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>
+        <a href="{{ url_for('admin.admin_delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>
     {% endif %}
 </div>
 {% endfor %}
