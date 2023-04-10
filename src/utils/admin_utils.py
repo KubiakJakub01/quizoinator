@@ -91,3 +91,16 @@ class AdminUtils:
         except:
             flash("There was an issue deleting your user", "error")
             return redirect(url_for("view_users"))
+
+    @_admin_required
+    def delete_post(self, id, post_id):
+        """Delete post"""
+        post_to_delete = self.Posts.query.get_or_404(post_id)
+        try:
+            self.db.session.delete(post_to_delete)
+            self.db.session.commit()
+            flash("Post deleted!", "info")
+            return redirect(url_for("view_posts"))
+        except:
+            flash("There was an issue deleting your post", "error")
+            return redirect(url_for("view_posts"))

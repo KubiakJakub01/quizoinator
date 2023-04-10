@@ -192,6 +192,14 @@ def admin_delete_user(id):
     return admin_utils.delete_user(current_user_id, id)
 
 
+@app.route("/admin/delete_post/<int:id>")
+@login_required
+def admin_delete_post(id):
+    """Delete post from db"""
+    current_user_id = current_user._id
+    return admin_utils.delete_post(current_user_id, id)
+
+
 if __name__ == "__main__":
     app = create_app(app)
     db = init_db(app)
