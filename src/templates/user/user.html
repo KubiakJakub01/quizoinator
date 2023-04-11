@@ -7,5 +7,5 @@
         <li class="list-group-item"><strong>Created: </strong> {{ user.data_created }}</li>
         </ul>
     </div>
-    <img src = "{{ url_for('users.static', filename='images/' + comment.author.profile_picture) }}" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
+    <img src = "{{ url_for('users.static', filename='images/' + user.profile_picture) }}" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
 {% endblock %}
