@@ -21,7 +21,7 @@ class UserForm(FlaskForm):
         ],
     )
     password2 = PasswordField("Confirm Password", validators=[DataRequired()])
-    profile_pic = FileField("Profile Picture")
+    profile_picture = FileField("Profile Picture")
     submit = SubmitField("Sign Up")
 
 
