@@ -12,6 +12,14 @@
 			<input type="text" class="form-control" placeholder="Add a comment" name="comment">
 			<button class="btn btn-outline-secondary" type="submit">Add</button>
 		</form>
+		<div class="d-flex align-items-right">
+			<a href="{{ url_for('blog.who_liked', id=post._id) }}">
+				<p class="mb-0">{{ post.likes|length }} likes</p>
+			</a>
+			<a href="{{ url_for('blog.like_post', id=post._id) }}">
+				<span class="glyphicon">&#x1F44D;</span>
+			</a>
+		</div>
 		<section style="background-color: #e7effd;">
 			<div class="container my-5 py-5 text-dark">
 			  <div class="row d-flex justify-content-center">
@@ -19,8 +27,8 @@
 				{% for comment in post.comments[::-1] %}
 				  <div class="d-flex flex-start mb-4">
 					<img class="rounded-circle shadow-1-strong me-3"
-					  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar" width="65"
-					  height="65" />
+					src = "{{ url_for('users.static', filename='images/' + comment.author.profile_picture) }}" alt="avatar" width="65"
+					height="65" />
 					<div class="card w-100">
 					  <div class="card-body p-4">
 						<div class="">
