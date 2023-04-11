@@ -18,6 +18,7 @@ class Users(db.Model, UserMixin):
     name = Column(String(20), nullable=False, unique=True)
     email = Column(String(20), nullable=False, unique=True)
     password_hash = Column(String(128))
+    profile_picture = Column(String(), nullable=False, default="default_pic.jpg")
     data_created = Column(db.DateTime, default=db.func.current_timestamp())
     posts = db.relationship("Posts", backref="author", lazy=True)
     comments = db.relationship("Comments", backref="author", lazy=True)
