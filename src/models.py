@@ -126,4 +126,4 @@ class Relationship(db.Model):
     user_b = db.relationship("Users", foreign_keys=[user_b_id], backref="user_b")
 
     def __repr__(self):
-        return f"User {self.user_id} is friends with {self.friend_id}"
+        return f"User {self.user_a.name} is friends with {self.user_b.name}"
