@@ -27,6 +27,19 @@ class UserUtils:
         user = self.Users.query.filter_by(_id=id).first()
         return render_template("user.html", user=user)
 
+    def search_user(self, form):
+        """Search user"""
+        print(form.searched.data)
+        print(form.validate_on_submit())
+        if form.validate_on_submit():
+            name = form.searched.data
+            user = self.Users.query.filter_by(name=name).first()
+            if user:
+                return redirect(url_for("users.user", id=user._id))
+            flash("User not found!", "error")
+            return redirect(url_for("users.user_home"))
+        return redirect(url_for("users.user_home"))
+
     def login(self, form):
             """Login page"""
             if form.validate_on_submit():
@@ -143,3 +156,4 @@ class UserUtils:
         """Get all users from db"""
         users = self.Users.query.all()
         return users
+
