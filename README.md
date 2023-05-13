@@ -2,12 +2,14 @@
 
 ## Setup
 
+Every command is supposed to be run from the root of the project.
+
 ### With python virtualenv
 
 Create a virtual environment and install the requirements:
 
 ```bash
-python3 -m venv venv
+python3 -m venv .venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
