@@ -1,0 +1,31 @@
+﻿body {
+}
+
+#searchQuiz{
+    min-width: 40%;
+
+    font-size: 18px;
+}
+#quizesList {
+    min-height: 600px;
+
+}
+.quizView {
+    background-color: white;
+    width: 80%;
+    min-height: 60px;
+    
+    color:black;
+    font-size: 20px;
+
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    
+}
+.quizView:hover {
+    opacity: 60%;
+    cursor: pointer;
+}

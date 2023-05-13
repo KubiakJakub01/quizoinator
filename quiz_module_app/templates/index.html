@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block head%}
+    <link href="{{ url_for('static', filename='styleIndex.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='jquery.scrollTo.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <a href="#" class="scrollup"></a>
+    <div id = "searchField" class = "container">
+        <input id = "searchQuiz" type = "search" placeholder="Search for quizzes" />
+    </div>
+    <div id="quizesList" class="container">
+        {% for quiz in quizes[:20] %}
+        <a href="{{ url_for('main.solve_quiz',quiz_id_parameter=quiz.id) }}">
+        <div class="quizView">
+
+            {{ quiz.title }}
+            <br/>
+            {{ quiz.description }}
+
+        </div>
+        </a>
+        <button onclick="deleteQuiz('{{quiz.id}}')">Usuń quiz</button>
+        {% endfor %}
+    </div>
+    <script>
+        function deleteQuiz(quiz_id) {
+            let confirmAction = confirm("Czy na pewno chcesz usunąć ten quiz?");
+            if (confirmAction) {
+                alert("Quiz usunięty");
+                window.location.href = "/delete/quiz/" + quiz_id;
+            } else {
+                alert("Anulowano usunięcie quizu");
+            }
+        }
+
+        jQuery(function ($) {
+            $.scrollTo(0);
+
+
+            $('#link3').click(function () { $.scrollTo($('.container'), 500); });
+            $('.scrollup').click(function () { $.scrollTo($('body'), 1000); });
+        }
+        );
+
+        $(window).scroll(
+            function () {
+                if ($(this).scrollTop() > 300) $('.scrollup').fadeIn();
+                else $('.scrollup').fadeOut();
+            }
+        );
+    </script>
+{% endblock %}
