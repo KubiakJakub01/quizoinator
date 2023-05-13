@@ -3,6 +3,7 @@
 ## Setup
 
 Every command is supposed to be run from the root of the project.
+Setup is described for Linux, but should be similar for other OS.
 
 ### With python virtualenv
 
