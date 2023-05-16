@@ -9,7 +9,10 @@
 {% block content %}
     <a href="#" class="scrollup"></a>
     <div id = "searchField" class = "container">
-        <input id = "searchQuiz" type = "search" placeholder="Search for quizzes" />
+        <form action="/" method="POST">
+        <input id = "searchQuiz" type = "search" name="searchQuiz" placeholder="Wyszukaj quiz" />
+        <input type="submit" name="search_btn" value="Szukaj">
+        </form>
     </div>
     <div id="quizesList" class="container">
         {% for quiz in quizes[:20] %}

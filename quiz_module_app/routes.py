@@ -128,19 +128,13 @@ def edit_quiz(quiz_id_parameter):
         return render_template('edit_quiz.html', questions=questions, quiz=quiz)
 
 
-@main.route('/', methods=['GET'])
+@main.route('/', methods=['GET','POST'])
 def index():
     
     if request.method == 'POST':
-        new_quiz = Quiz(
-            title=request.form['title'], description=request.form['description'])
-        try:
-            db.session.add(new_quiz)
-            db.session.commit()
-            return redirect(url_for('main.edit_quiz', quiz_id_parameter=new_quiz.id))
-        except:
-            return 'There was an issue adding your task'
-
+       searched_quiz = request.form['searchQuiz']
+       quizes = Quiz.query.filter(Quiz.title.ilike(f'%{searched_quiz}%')).all()
+       return render_template('index.html', quizes=quizes)
     else:
         quizes = Quiz.query.all()
         return render_template('index.html', quizes=quizes)
