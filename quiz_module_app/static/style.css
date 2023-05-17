@@ -1,0 +1,124 @@
+﻿html {
+    min-height: 100%;
+    margin: 0;
+}
+
+body { 
+    background: rgb(223,215,79);
+    background: linear-gradient(140deg,rgba(223,215,79,1) 0%, rgba(153,238,117,1) 0%, rgba(244,251,118,1) 48%, rgba(242,138,169,1) 98%);
+
+
+    text-align: center;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+}
+
+header {
+    background-image: linear-gradient(to left,#c0b5b5,#d1c6c6);
+
+    padding: 0;
+
+    margin-top: 0;
+    width: 100%;
+}
+
+header ul {
+    list-style-type: none;
+    padding: 5px;
+    margin-top: 0;
+
+    display: block;
+    position: relative;
+        
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+}
+
+header ul li {
+    display: inline-block;
+
+    font-size: 25px;
+
+    padding: 10px;
+}
+
+.container {
+    background-color: #f0e7e76f;
+
+    border-radius: 10px;
+    border: #1c6e37 8px solid;
+
+    font-family: 'Roboto Condensed', sans-serif;
+
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+.container h1{
+    font-size: 40px;
+}
+.form-control{
+    text-align: center;
+
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.btn-primary {
+    text-align: center;
+
+    width: 18%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/*
+.justALine {
+    margin: 10px;
+    background: rgb(223,215,79);
+    background: linear-gradient(90deg, rgba(223,215,79,1) 0%, rgba(153,238,117,1) 0%, rgba(244,251,118,1) 48%, rgba(242,138,169,1) 98%);
+    height: 10px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+*/
+/*
+    Styles for links
+*/
+a:link {
+    color: black;
+    text-decoration: none;
+}
+
+a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+a:active {
+    color: black;
+    text-decoration: none;
+}
+.scrollup {
+    width: 64px;
+    height: 64px;
+    text-decoration: none;
+    background: url("up.jpg") no-repeat 0px 0px;
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    display: none;
+}
