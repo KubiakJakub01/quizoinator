@@ -71,7 +71,10 @@ def solve_quiz(quiz_id_parameter):
             for user_answer in request.form.getlist(str(question.id)):
                 user_answers.append(int(user_answer))
         print('user_answers: ',user_answers)
-        score = score + len(list(set(correct_answers).intersection(user_answers)))    
+        incorrect_user_answers = 0
+        if len(user_answer) > len(correct_answers):
+            incorrect_user_answers = len(user_answer) - len(correct_answers)
+        score = score + len(list(set(correct_answers).intersection(user_answers))) - incorrect_user_answers
         return render_template('display_score.html', score=score)
     else:
         return render_template('solve_quiz.html', quiz=quiz, questions=questions)
