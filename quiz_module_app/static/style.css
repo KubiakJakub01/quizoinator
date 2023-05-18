@@ -122,3 +122,13 @@ a:active {
     bottom: 50px;
     display: none;
 }
+
+.logo{
+
+    background-image: url("Q2.png");
+
+    width: 75px;
+    height: 0px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}

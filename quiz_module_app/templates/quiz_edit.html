@@ -70,8 +70,14 @@
         window.location.href = "{{ url_for('main.index') }}";
     });
 
-    $('finsih_deleting_btn').click(function () {
-        //TUTAJ NIE WIEM CO WIĘC ZOSTAWIAM CI PRZYCISK NA PODPIĘCIE USUWANIA
+    $('#finsih_deleting_btn').click(function () {
+        let confirmAction = confirm("Czy na pewno chcesz usunąć ten quiz?");
+        if (confirmAction) {
+            alert("Quiz usunięty");
+            window.location.href = "/delete/quiz/" + quiz_id;//"{{ url_for('main.index') }}";
+        } else {
+            alert("Anulowano usunięcie quizu");
+        }
     });
 
 

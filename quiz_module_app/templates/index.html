@@ -8,8 +8,13 @@
 
 {% block content %}
     <a href="#" class="scrollup"></a>
-    <div id = "searchField" class = "container">
-        <input id = "searchQuiz" type = "search" placeholder="Search for quizzes" />
+    <div id="searchField" class="container">
+
+        <form action="/" method="POST">
+            <input  id="searchQuiz" name="searchQuiz" type="search" placeholder="Wyszukaj quiz" />
+            <input type="submit" name="search_btn" value="Szukaj">
+        </form>
+
     </div>
     <div id="quizesList" class="container">
         {% for quiz in quizes[:10] %}
@@ -29,21 +34,9 @@
             </a>
             <div style="clear:both"></div>
         </div>
-       
-        <!--<button onclick="deleteQuiz('{{quiz.id}}')">Usuń quiz</button>-->
         {% endfor %}
     </div>
     <script>
-        function deleteQuiz(quiz_id) {
-            let confirmAction = confirm("Czy na pewno chcesz usunąć ten quiz?");
-            if (confirmAction) {
-                alert("Quiz usunięty");
-                window.location.href = "/delete/quiz/" + quiz_id;
-            } else {
-                alert("Anulowano usunięcie quizu");
-            }
-        }
-
         jQuery(function ($) {
             $.scrollTo(0);
 

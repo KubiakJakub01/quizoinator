@@ -3,7 +3,6 @@
     "",
     "\\instance",
     "\\quiz_module_app",
-    "\\quiz_module_app\\static",
     "\\quiz_module_app\\templates"
   ],
   "PreviewInSolutionExplorer": false

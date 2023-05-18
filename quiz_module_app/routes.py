@@ -72,7 +72,10 @@ def solve_quiz(quiz_id_parameter):
             for user_answer in request.form.getlist(str(question.id)):
                 user_answers.append(int(user_answer))
         print('user_answers: ',user_answers)
-        score = score + len(list(set(correct_answers).intersection(user_answers)))    
+        incorrect_user_answers = 0
+        if len(user_answer) > len(correct_answers):
+            incorrect_user_answers = len(user_answer) - len(correct_answers)
+        score = score + len(list(set(correct_answers).intersection(user_answers))) - incorrect_user_answers    
         return render_template('display_score.html', score=score)
     else:
         return render_template('quiz_solve.html', quiz=quiz, questions=questions)
@@ -122,23 +125,24 @@ def edit_quiz(quiz_id_parameter):
         quizDescription = format(request.form['quizDescription'])
 
         #try:
-        a = questions[0].id
-        for question in questions:
-            c = 0
-            question.text = format(request.form['questionText'+str(a)])
-            a += 1
-            answers = Answer.query.filter_by(question_id=question.id).all()
+        if questions:
+            a = questions[0].id
+            for question in questions:
+                c = 0
+                question.text = format(request.form['questionText'+str(a)])
+                a += 1
+                answers = Answer.query.filter_by(question_id=question.id).all()
 
-            if answers:
-                for answer in answers:
-                    b = answers[c].id
-                    c += 1
-                    answer.text = format(request.form['answerText'+str(b)])
+                if answers:
+                    for answer in answers:
+                        b = answers[c].id
+                        c += 1
+                        answer.text = format(request.form['answerText'+str(b)])
 
-                    is_answer_correct = False
-                    if (request.form.get('answerBox'+str(b)) == "1"):
-                         is_answer_correct = True
-                    answer.is_correct = is_answer_correct
+                        is_answer_correct = False
+                        if (request.form.get('answerBox'+str(b)) == "1"):
+                             is_answer_correct = True
+                        answer.is_correct = is_answer_correct
 
         quiz.title = quizTile
         quiz.description = quizDescription
@@ -151,19 +155,13 @@ def edit_quiz(quiz_id_parameter):
         return render_template('quiz_edit.html', quiz=quiz, questions=questions)
 
 
-@main.route('/', methods=['GET'])
+@main.route('/', methods=['GET','POST'])
 def index():
     
     if request.method == 'POST':
-        new_quiz = Quiz(
-            title=request.form['title'], description=request.form['description'])
-        try:
-            db.session.add(new_quiz)
-            db.session.commit()
-            return redirect(url_for('main.edit_quiz', quiz_id_parameter=new_quiz.id))
-        except:
-            return 'There was an issue adding your task'
-
+       searched_quiz = format(request.form['searchQuiz'])
+       quizes = Quiz.query.filter(Quiz.title.ilike(f'%{searched_quiz}%')).all()
+       return render_template('index.html', quizes=quizes)
     else:
         quizes = Quiz.query.all()
         return render_template('index.html', quizes=quizes)
