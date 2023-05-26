@@ -16,7 +16,7 @@ login_menager = LoginManager()
 
 def create_app(app):
     app.secret_key = "mysecret"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.permanent_session_lifetime = timedelta(minutes=5)
     return app
