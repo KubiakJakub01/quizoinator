@@ -81,6 +81,24 @@ class RelationshipUtils:
         flash("Friend request not found!", "error")
         return redirect(url_for("users.user_home"))
 
+    def remove_relationship(self, id):
+        """
+        Remove relationship
+        """
+        relationship = self.Relationship.query.filter_by(
+            _id=id
+        ).first()
+        if relationship:
+            if relationship.status == relationship_status["accepted"]:
+                self.db.session.delete(relationship)
+                self.db.session.commit()
+                flash("Friend removed!", "info")
+                return redirect(url_for("users.user_home"))
+            flash("Friend request already accepted!", "error")
+            return redirect(url_for("users.user_home"))
+        flash("Friend request not found!", "error")
+        return redirect(url_for("users.user_home"))
+
     def get_relationships(self, id):
         """
         Get relationships
@@ -91,7 +109,21 @@ class RelationshipUtils:
             | (self.Relationship.user_b_id == id)
         ).all()
         return relationships
-    
+
+    def check_if_friends(self, id, current_user_id):
+        """
+        Check if friends
+        """
+        relationships = self.get_relationships(id)
+        for relationship in relationships:
+            if relationship.user_a_id == current_user_id:
+                if relationship.status == relationship_status["accepted"]:
+                    return True
+            if relationship.user_b_id == current_user_id:
+                if relationship.status == relationship_status["accepted"]:
+                    return True
+        return False
+
     def friends(self, id):
         """
         Get friends

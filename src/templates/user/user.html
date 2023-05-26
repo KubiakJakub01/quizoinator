@@ -8,5 +8,11 @@
         </ul>
     </div>
     <img src = "{{ url_for('users.static', filename='images/' + user.profile_picture) }}" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
-    <a href="{{ url_for('users.add_friend', id=user._id)}}" class="btn btn-primary">Add friend</a>
+    {% if user._id != current_user._id %}
+        {% if if_friends %}
+            <a href="{{ url_for('users.remove_friend', id=user._id)}}" class="btn btn-primary btn-danger">Remove friend</a>
+        {% else %}
+            <a href="{{ url_for('users.add_friend', id=user._id)}}" class="btn btn-primary">Add friend</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}
