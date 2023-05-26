@@ -20,7 +20,7 @@ class AdminUtils:
 
     def verify_admin(self, id):
         """Verify admin"""
-        if id in self.admin_list:
+        if id in self.get_admins:
             return True
         else:
             return False
