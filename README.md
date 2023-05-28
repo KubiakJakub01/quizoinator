@@ -1,5 +1,21 @@
 # quizoinator
 
+## Description:
+
+Quizoinator is divided into two modules: community portal and quiz portal. The community portal is a place where users can create posts, comment on them, like them and make relationships with other users. The quiz portal is a place where users can create quizzes and solve them. The application is written in Python using the Flask framework. The database used is sqlalchemy.
+
+## Technologies:
+
+- Python
+- Flask
+- SQLAlchemy
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
+- Docker
+- Docker-compose
+
 ## Setup
 
 After successful setup, the application will be available at http://localhost:5000
