@@ -1,5 +1,38 @@
 # quizoinator
 
+## Table of contents:
+
+- [Description](#description)
+- [Technologies](#technologies)
+- [Setup](#setup)
+  - [Prerequisites](#prerequisites)
+    - [Clone the repository](#clone-the-repository)
+    - [Install python3](#install-python3)
+    - [Install pip](#install-pip)
+    - [Docker (optional)](#docker-optional)
+  - [With python virtualenv](#with-python-virtualenv)
+    - [Linux and MacOS](#linux-and-macos)
+    - [Windows](#windows)
+  - [With docker](#with-docker)
+  - [With docker-compose](#with-docker-compose)
+- [Fill the database with sample data (optional)](#fill-the-database-with-sample-data-optional)
+- [Screenshots](#screenshots)
+  1. [Home page](#home-page)
+  2. [Sign up page](#sign-up-page)
+  3. [Login page](#login-page)
+  4. [User home page](#user-home-page)
+  5. [Update user profile page](#update-user-profile-page)
+  6. [Browse blog](#browse-blog)
+  7. [Post view](#post-view)
+  8. [Like view](#like-view)
+  9. [Add comment](#add-comment)
+  10. [Write post](#write-post)
+  11. [Like post](#like-post)
+  12. [Search posts](#search-posts)
+  13. [Add friend](#add-friend)
+  14. [Friend request](#friend-request)
+  15. [Accepted friend request](#accepted-friend-request)
+
 ## Description:
 
 Quizoinator is divided into two modules: community portal and quiz portal. The community portal is a place where users can create posts, comment on them, like them and make relationships with other users. The quiz portal is a place where users can create quizzes and solve them. The application is written in Python using the Flask framework. The database used is sqlalchemy.
@@ -29,25 +62,23 @@ git clone https://github.com/KubiakJakub01/quizoinator.git
 cd quizoinator
 ```
 
-#### Install python3
+#### Install python3:
 
-Linux:
+* Linux:
 ```bash
 sudo apt install python3
 ```
 
-Windows:
-```bash
-https://www.python.org/downloads/windows/
-```
+* Windows: https://www.python.org/downloads/windows/
 
-MacOS:
+* MacOS:
 https://www.python.org/downloads/mac-osx/
 
 For MacOS you can also use Homebrew:
 ```bash
 brew install python3
 ```
+
 For more information visit:
 ```bash
 https://docs.python-guide.org/starting/install3/osx/
@@ -111,6 +142,21 @@ docker run -p 5000:5000 -v ./instance:/app/instance -v ./src/static/user/images:
 
 ```bash
 docker compose up
+```
+
+## Fill the database with sample data (optional)
+
+To fill the database with sample data, run the following script:
+
+```python3
+python3 feed_db_with_sample_data.py \
+        [--db_url instance/database.db] \
+        [--pictures_dir images/sample_avatars] \
+        [--pictures_save_dir src/static/user/images] \
+        [--posts_num 10] \
+        [--comments_num 30] \
+        [--likes_num 50] \
+        [--relationships_num 20]
 ```
 
 ## Screenshots
