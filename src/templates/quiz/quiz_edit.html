@@ -10,7 +10,7 @@
 {% block content %}
 <a href="#" class="scrollup"></a>
 <div class="container">
-    <form action="{{ url_for('main.edit_quiz',quiz_id_parameter=quiz.id) }}"
+    <form action="{{ url_for('quiz.edit_quiz',quiz_id_parameter=quiz.id) }}"
           method="POST">
         <holder id="{{quiz.id}}"></holder>
         <h1>Edytuj quiz</h1>
@@ -67,7 +67,7 @@
 </div>
 <script>
     $('#cancel_editing_btn').click(function () {
-        window.location.href = "{{ url_for('main.index') }}";
+        window.location.href = "{{ url_for('quiz.index') }}";
     });
 
     $('#finsih_deleting_btn').click(function () {

@@ -20,6 +20,15 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('users.user_home')}}">User</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Quiz
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{{ url_for('quiz.index') }}">Find quiz</a>
+                <a class="dropdown-item" href="{{ url_for('quiz.quiz_create') }}">Create quiz</a>
+            </div>
+            </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

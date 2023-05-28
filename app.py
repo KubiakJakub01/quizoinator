@@ -21,6 +21,7 @@ from src.utils.forms import SearchForm
 from src.users import users
 from src.blog import blog
 from src.admin import admin
+from src.quiz import quiz
 
 
 @login_menager.user_loader
@@ -55,5 +56,6 @@ if __name__ == "__main__":
     app.register_blueprint(users, url_prefix="/user")
     app.register_blueprint(blog, url_prefix="/blog")
     app.register_blueprint(admin, url_prefix="/admin")
+    app.register_blueprint(quiz, url_prefix="/quiz")
 
     app.run(debug=True, host="0.0.0.0")
