@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}View All Users {% endblock %}
+{% block content %}
+    <h1>View All Users</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Data created</th>
+                <th scope="col">Delete user</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{user._id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.data_created}}</td>
+                    <td><a href="{{ url_for('admin_delete_user', id=user._id)}}" class="btn btn-primary btn-danger">Delete user</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

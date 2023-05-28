@@ -1,14 +1,11 @@
 {% extends "base.html" %}
-{% block title %}View All Users {% endblock %}
 {% block content %}
-    <h1>View All Users</h1>
+<div class="container">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Data created</th>
             </tr>
         </thead>
         <tbody>
@@ -16,10 +13,20 @@
                 <tr>
                     <td>{{user._id}}</td>
                     <td>{{user.name}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.data_created}}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <h1 class="mt-5 mb-3">User</h1>
+    <form method="POST" class="mb-5">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+          {{ form.user_id.label }} {{ form.user_id(class="form-control") }}
+      </div>
+      <div class="form-group">
+          {{ form.reason.label }} {{ form.reason(class="form-control", rows=5) }}
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+</div>
 {% endblock %}
