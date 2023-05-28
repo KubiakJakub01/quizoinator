@@ -7,9 +7,15 @@ from src.utils.user_utils import UserUtils
 from src.models import Users
 from src.utils.forms import UserForm, LoginForm
 
+template_folder = os.path.join("templates", "user")
+static_folder = os.path.join("static", "user")
+images_dir = os.path.join("src", static_folder, "images")
 users = Blueprint('users', __name__, 
-                  template_folder=os.path.join('templates', 'user'))
-user_utils = UserUtils(db, Users)
+                  template_folder=template_folder,
+                  static_folder=static_folder)
+user_utils = UserUtils(db, 
+                       Users, 
+                       images_dir)
 
 @users.route("/home")
 @login_required

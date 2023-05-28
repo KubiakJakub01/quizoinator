@@ -2,7 +2,7 @@
 Module for forms
 """
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
@@ -21,6 +21,7 @@ class UserForm(FlaskForm):
         ],
     )
     password2 = PasswordField("Confirm Password", validators=[DataRequired()])
+    profile_picture = FileField("Profile Picture")
     submit = SubmitField("Sign Up")
 
 

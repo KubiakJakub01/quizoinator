@@ -1,13 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
+    <div class="container">
+        <div class="row">
     <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong>Username: </strong> {{ current_user.name }}</li>
         <li class="list-group-item"><strong>Email: </strong> {{ current_user.email }}</li>
         <li class="list-group-item"><strong>Created: </strong> {{ current_user.data_created }}</li>
-        </ul>
-        <a href="/logout" class="btn btn-primary">Logout</a>
+    </ul>
+        <a href="{{ url_for('users.logout', id=current_user._id)}}" class="btn btn-primary">Logout</a>
         <a href="{{ url_for('users.update', id=current_user._id)}}" class="btn btn-primary">Update</a>
         <a href="{{ url_for('users.delete', id=current_user._id)}}" class="btn btn-primary btn-danger">Delete</a>
     </div>
+    <div class="col-8">
+    
+    <img src = "{{ url_for('users.static', filename='images/' + current_user.profile_picture) }}" 
+                alt="Profile Picture",
+                style="width: 200px; height: 200px; border-radius: 50%;">
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
