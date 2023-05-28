@@ -20,14 +20,10 @@
                     <td>{{friend.date_added}}</td>
                 </tr>
                 {% if friend.status.name == "pending" %}
-                {% if friend.user_a_id != current_user._id %}
-                    <td><a href="{{ url_for('users.accept_friend', id=friend._id)}}" class="btn btn-primary">Accept</a></td>
-                    <td><a href="{{ url_for('users.reject_friend', id=friend._id)}}" class="btn btn-primary">Reject</a></td>
+                    {% if friend.user_a_id != current_user._id %}
+                        <td><a href="{{ url_for('users.accept_friend', id=friend._id)}}" class="btn btn-primary">Accept</a></td>
+                        <td><a href="{{ url_for('users.reject_friend', id=friend._id)}}" class="btn btn-primary">Reject</a></td>
                     {% endif %}
-                {% elif friend.status.name == "accepted" %}
-                    <td>Accepted</td>
-                {% else %}
-                    <td>Rejected</td>
                 {% endif %}
             {% endfor %}
         </tbody>

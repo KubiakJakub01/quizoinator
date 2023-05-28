@@ -22,10 +22,10 @@ class UserUtils:
         """User home page"""
         return render_template("user_home.html")
 
-    def user(self, id):
+    def user(self, id, if_friends):
         """User profile"""
         user = self.Users.query.filter_by(_id=id).first()
-        return render_template("user.html", user=user)
+        return render_template("user.html", user=user, if_friends=if_friends)
 
     def search_user(self, form):
         """Search user"""
@@ -108,7 +108,8 @@ class UserUtils:
             name_to_update.name = form.name.data
             name_to_update.email = form.email.data
             profile_picture = form.profile_picture.data
-            name_to_update.profile_picture = self.process_picture(profile_picture) 
+            if profile_picture:
+                name_to_update.profile_picture = self.process_picture(profile_picture) 
             try:
                 self.db.session.commit()
                 flash("User updated!", "info")

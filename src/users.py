@@ -34,7 +34,8 @@ def user_home():
 @login_required
 def user(id):
     """User page"""
-    return user_utils.user(id)
+    if_friends = relationship_utils.check_if_friends(id, current_user._id)
+    return user_utils.user(id, if_friends)
 
 @users.route("/search", methods=["POST"])
 @login_required
@@ -91,6 +92,12 @@ def accept_friend(id):
 def reject_friend(id):
     """Reject friend to db"""
     return relationship_utils.reject_relationship(id)
+
+@users.route("/remove_friend/<int:id>")
+@login_required
+def remove_friend(id):
+    """Remove friend from db"""
+    return relationship_utils.remove_relationship(id)
 
 @users.route("/logout")
 @login_required
