@@ -275,3 +275,31 @@ You can accept or reject the friend request.
 15. Accepted friend request:
 
 ![Accept friend request](docs/app-screenshots/accepted_freind_request.PNG)
+
+16. Admin panel:
+
+To access the admin panel, you must be logged in as an admin.
+
+![Admin view](docs/app-screenshots/admin_view.PNG)
+
+17. Admin panel - users:
+
+![Admin users view](docs/app-screenshots/admin_users_view.PNG)
+
+18. Admin panel - admin users:
+
+![admin view admins](docs/app-screenshots/admin_view_admins.PNG)
+
+19. Admin panel - add admin:
+
+In the admin panel, you can add a new admin.
+Click on the ```Add admin``` button.
+Then write id of the user you want to add as an admin and click on the ```Add``` button.
+
+![Add admin](docs/app-screenshots/add_admin.PNG)
+
+![Added admin](docs/app-screenshots/added_admin.PNG)
+
+After this new user will be able to access the admin panel.
+
+![Added admin view](docs/app-screenshots/new_admin.PNG)
