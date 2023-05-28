@@ -3,7 +3,9 @@
     "",
     "\\instance",
     "\\quiz_module_app",
+    "\\quiz_module_app\\static",
     "\\quiz_module_app\\templates"
   ],
+  "SelectedNode": "\\quiz_module_app\\static\\Q2.png",
   "PreviewInSolutionExplorer": false
 }

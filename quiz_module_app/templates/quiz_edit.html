@@ -12,7 +12,7 @@
 <div class="container">
     <form action="{{ url_for('main.edit_quiz',quiz_id_parameter=quiz.id) }}"
           method="POST">
-
+        <holder id="{{quiz.id}}"></holder>
         <h1>Edytuj quiz</h1>
         <h3>Tytuł</h3>
         <textarea name="quizTitle">{{quiz.title}}</textarea>
@@ -73,8 +73,9 @@
     $('#finsih_deleting_btn').click(function () {
         let confirmAction = confirm("Czy na pewno chcesz usunąć ten quiz?");
         if (confirmAction) {
+            var id = document.getElementsByTagName("holder")[0].id
             alert("Quiz usunięty");
-            window.location.href = "/delete/quiz/" + quiz_id;//"{{ url_for('main.index') }}";
+            window.location.href = "/delete/quiz/" + id;
         } else {
             alert("Anulowano usunięcie quizu");
         }
