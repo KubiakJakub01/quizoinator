@@ -1,9 +1,12 @@
 """Module with database models"""
 import enum
+
 # Import flask_login
 from flask_login import UserMixin
+
 # Import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
+
 # Import password / encryption helper tools
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -119,7 +122,11 @@ class Relationship(db.Model):
     user_a_id = Column(Integer, ForeignKey("users.id"))
     # Foreign key to Users
     user_b_id = Column(Integer, ForeignKey("users.id"))
-    status = Column(db.Enum(relationship_status), default=relationship_status.pending, nullable=False)
+    status = Column(
+        db.Enum(relationship_status),
+        default=relationship_status.pending,
+        nullable=False,
+    )
     date_added = Column(db.DateTime, default=db.func.current_timestamp())
 
     user_a = db.relationship("Users", foreign_keys=[user_a_id], backref="user_a")

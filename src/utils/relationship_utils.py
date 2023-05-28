@@ -4,6 +4,7 @@ Module for relationship utils
 from flask import flash, redirect, url_for, render_template
 from src.models import relationship_status
 
+
 class RelationshipUtils:
     """
     Class for relationship utils
@@ -49,9 +50,7 @@ class RelationshipUtils:
         """
         Accept relationship
         """
-        relationship = self.Relationship.query.filter_by(
-            _id=id
-        ).first()
+        relationship = self.Relationship.query.filter_by(_id=id).first()
         if relationship:
             if relationship.status == relationship_status["pending"]:
                 relationship.status = relationship_status["accepted"]
@@ -67,9 +66,7 @@ class RelationshipUtils:
         """
         Reject
         """
-        relationship = self.Relationship.query.filter_by(
-            _id=id
-        ).first()
+        relationship = self.Relationship.query.filter_by(_id=id).first()
         if relationship:
             if relationship.status == relationship_status["pending"]:
                 self.db.session.delete(relationship)
@@ -85,9 +82,7 @@ class RelationshipUtils:
         """
         Remove relationship
         """
-        relationship = self.Relationship.query.filter_by(
-            _id=id
-        ).first()
+        relationship = self.Relationship.query.filter_by(_id=id).first()
         if relationship:
             if relationship.status == relationship_status["accepted"]:
                 self.db.session.delete(relationship)
@@ -105,8 +100,7 @@ class RelationshipUtils:
         """
         # Get all relationships where user_a_id or user_b_id is id
         relationships = self.Relationship.query.filter(
-            (self.Relationship.user_a_id == id)
-            | (self.Relationship.user_b_id == id)
+            (self.Relationship.user_a_id == id) | (self.Relationship.user_b_id == id)
         ).all()
         return relationships
 

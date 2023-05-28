@@ -41,24 +41,24 @@ class UserUtils:
         return redirect(url_for("users.user_home"))
 
     def login(self, form):
-            """Login page"""
-            if form.validate_on_submit():
-                name = form.name.data
-                password = form.password.data
-                found_user = self.Users.query.filter_by(name=name).first()
-                if found_user:
-                    if found_user.verify_password(password):
-                        login_user(found_user)
-                        session.permanent = True
-                        session["user"] = name
-                        flash("Logged in successfully!", "info")
-                        return redirect(url_for("users.user_home"))
-                    else:
-                        flash("Invalid credentials!", "error")
-                        return redirect(url_for("users.login"))
-                flash("This user doesn't exist!", "error")
-                return redirect(url_for("users.login"))
-            return render_template("login.html", form=form)
+        """Login page"""
+        if form.validate_on_submit():
+            name = form.name.data
+            password = form.password.data
+            found_user = self.Users.query.filter_by(name=name).first()
+            if found_user:
+                if found_user.verify_password(password):
+                    login_user(found_user)
+                    session.permanent = True
+                    session["user"] = name
+                    flash("Logged in successfully!", "info")
+                    return redirect(url_for("users.user_home"))
+                else:
+                    flash("Invalid credentials!", "error")
+                    return redirect(url_for("users.login"))
+            flash("This user doesn't exist!", "error")
+            return redirect(url_for("users.login"))
+        return render_template("login.html", form=form)
 
     def logout(self):
         """Logout page"""
@@ -94,7 +94,9 @@ class UserUtils:
                 flash("User already exists!")
                 return redirect(url_for("users.login"))
             else:
-                usr = self.Users(name=name, email=email, password=password, profile_picture=pic_name)
+                usr = self.Users(
+                    name=name, email=email, password=password, profile_picture=pic_name
+                )
                 self.db.session.add(usr)
                 self.db.session.commit()
                 flash("User created!")
@@ -109,7 +111,7 @@ class UserUtils:
             name_to_update.email = form.email.data
             profile_picture = form.profile_picture.data
             if profile_picture:
-                name_to_update.profile_picture = self.process_picture(profile_picture) 
+                name_to_update.profile_picture = self.process_picture(profile_picture)
             try:
                 self.db.session.commit()
                 flash("User updated!", "info")
@@ -117,19 +119,14 @@ class UserUtils:
             except:
                 flash("There was an issue updating your task", "error")
                 return render_template(
-                    "update.html",
-                    form=form,
-                    name_to_update=name_to_update,
+                    "update.html", form=form, name_to_update=name_to_update
                 )
         else:
             form.name.data = name_to_update.name
             form.email.data = name_to_update.email
             form.profile_picture.data = name_to_update.profile_picture
             return render_template(
-                "update.html",
-                form=form,
-                name_to_update=name_to_update,
-                id=id,
+                "update.html", form=form, name_to_update=name_to_update, id=id
             )
 
     def delete_user(self, id):
@@ -157,4 +154,3 @@ class UserUtils:
         """Get all users from db"""
         users = self.Users.query.all()
         return users
-

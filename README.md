@@ -9,9 +9,19 @@ Setup is described for Linux, but should be similar for other OS.
 
 Create a virtual environment and install the requirements:
 
+#### Linux
+
 ```bash
 python3 -m venv .venv
 source venv/bin/activate
+pip install -r requirements.txt
+```
+
+#### Windows
+
+```bash
+python -m venv .venv
+.\venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -38,5 +48,5 @@ docker run -p 5000:5000 -v ./instance:/app/instance -v ./src/static/user/images:
 ### With docker-compose
 
 ```bash
-docker-compose up
+docker compose up
 ```

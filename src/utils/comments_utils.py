@@ -18,9 +18,7 @@ class CommentsUtils:
         """Add comment to db"""
         if form.validate_on_submit():
             comment = self.Comments(
-                post_id=id,
-                author_id=author_id,
-                comment=form.comment.data,
+                post_id=id, author_id=author_id, comment=form.comment.data
             )
             self.db.session.add(comment)
             self.db.session.commit()
