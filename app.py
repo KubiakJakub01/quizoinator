@@ -33,7 +33,7 @@ def load_user(user_id):
 def base():
     """Base context for all templates"""
     form = SearchForm()
-    admin_list = Admin.query.all()
+    admin_list = [admin.user_id for admin in Admin.query.all()]
     return dict(form=form, admin_list=admin_list)
 
 
@@ -49,11 +49,11 @@ if __name__ == "__main__":
     login_menager = init_login_manager(app)
     ckeditor = init_ckeditor(app)
 
+    with app.app_context():
+        db.create_all()
+
     app.register_blueprint(users, url_prefix="/user")
     app.register_blueprint(blog, url_prefix="/blog")
     app.register_blueprint(admin, url_prefix="/admin")
-
-    with app.app_context():
-        db.create_all()
 
     app.run(debug=True, host="0.0.0.0")

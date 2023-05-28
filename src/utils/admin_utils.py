@@ -63,7 +63,7 @@ class AdminUtils:
                 form.reason.data = ""
                 self.db.session.add(admin)
                 self.db.session.commit()
-                self.admin_list.append(admin.user_id)
+                # self.admin_list.append(admin.user_id)
                 flash("Admin added!", "info")
                 return redirect(url_for("admin.admin_home"))
         return render_template("add_admin.html", form=form, users=users)
@@ -78,7 +78,7 @@ class AdminUtils:
     def delete_user(self, id, user_id):
         """Delete user"""
         user_to_delete = self.User.query.get_or_404(user_id)
-        if user_to_delete._id in self.admin_list:
+        if user_to_delete._id in self.get_admins:
             flash("You cannot delete an admin!", "error")
             return redirect(url_for("admin.view_users"))
         try:
