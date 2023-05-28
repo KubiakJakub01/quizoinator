@@ -4,19 +4,23 @@ from datetime import timedelta
 # Import flask and template operators
 from flask import Flask, redirect, url_for, render_template, session, flash, request
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_ckeditor import CKEditor
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text
 
 # Import password / encryption helper tools
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Import forms
-from utils.forms import UserForm, LoginForm
+from utils.forms import UserForm, LoginForm, PostForm, SearchForm
+from utils.posts_utils import PostsUtils
+from utils.user_utils import UserUtils
 
 # Define the application configuration
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 app.secret_key = "mysecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -24,7 +28,7 @@ app.permanent_session_lifetime = timedelta(minutes=5)
 
 # Define the database object which is imported
 db = SQLAlchemy(app)
-
+ 
 # Define login manager
 login_menager = LoginManager()
 login_menager.init_app(app)
@@ -35,6 +39,12 @@ login_menager.login_view = "login"
 def load_user(user_id):
     """Load user from database"""
     return Users.query.get(int(user_id))
+
+@app.context_processor
+def base():
+    """Base context for all templates"""
+    form = SearchForm()
+    return dict(form=form)
 
 
 @app.route("/")
@@ -53,25 +63,8 @@ def user():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Sign up page"""
-    name = None
-    email = None
-    password = None
     form = UserForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
-        password = form.password.data
-        found_user = Users.query.filter_by(name=name).first()
-        if found_user:
-            flash("User already exists!")
-            return redirect(url_for("login"))
-        else:
-            usr = Users(name=name, email=email, password=password)
-            db.session.add(usr)
-            db.session.commit()
-            flash("User created!")
-            return redirect(url_for("login"))
-    return render_template("signup.html", form=form)
+    return user_utils.add_user(form)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -104,47 +97,19 @@ def login():
 def update(id):
     """Update user in db"""
     form = UserForm()
-    name_to_update = Users.query.get_or_404(id)
-    if request.method == "POST":
-        name_to_update.name = form.name.data
-        name_to_update.email = form.email.data
-        try:
-            db.session.commit()
-            flash("User updated!", "info")
-            return render_template("user.html")
-        except:
-            flash("There was an issue updating your task", "error")
-            return render_template("update.html", 
-                                   form=form,
-                                   name_to_update=name_to_update)
-    else:
-        form.name.data = name_to_update.name
-        form.email.data = name_to_update.email
-        return render_template("update.html", 
-                               form=form,
-                               name_to_update=name_to_update,
-                               id=id)
+    return user_utils.update_user(id, form)
 
 
 @app.route("/delete/<int:id>")
 @login_required
 def delete(id):
     """Delete user from db"""
-    name_to_delete = Users.query.get_or_404(id)
-    id = current_user._id
-    if id == name_to_delete._id:
-        try:
-            db.session.delete(name_to_delete)
-            db.session.commit()
-            flash("User deleted!", "info")
-            return redirect(url_for("user"))
-        except:
-            flash("There was an issue deleting your task", "error")
-            return redirect(url_for("user"))
-    else:
-        flash("You can't delete this profile!", "error")
-        return redirect(url_for("user"))
+    return user_utils.delete_user(id)
 
+@app.route("/view")
+def view():
+    """View all user in db"""
+    return render_template("view.html", users=user_utils.get_users())
 
 @app.route("/logout")
 @login_required
@@ -155,16 +120,50 @@ def logout():
     return redirect(url_for("home"))
 
 
+@app.route("/post/add", methods=["POST", "GET"])
+@login_required
+def add_post():
+    """Add post to db"""
+    form = PostForm()
+    return posts_utils.add_post(form, author=current_user.name)
+
+@app.route("/post/view")
+@login_required
+def view_posts():
+    """View all posts in db"""
+    return posts_utils.view_posts()
+
+@app.route("/post/view/<int:id>")
+@login_required
+def view_post(id):
+    """View single post in db"""
+    return posts_utils.view_post(id)
+
+@app.route("/post/update/<int:id>", methods=["POST", "GET"])
+@login_required
+def update_post(id):
+    """Update post in db"""
+    form = PostForm()
+    return posts_utils.update_post(id, form, author=current_user.name)
+
+@app.route("/post/delete/<int:id>")
+@login_required
+def delete_post(id):
+    """Delete post from db"""
+    return posts_utils.delete_post(id, author=current_user.name)
+
+@app.route("/post/search", methods=["POST"])
+@login_required
+def search_post():
+    """Search post in db"""
+    form = SearchForm()
+    return posts_utils.search_post(form)
+
 @app.route("/admin")
 def admin():
     """Admin page"""
     return redirect(url_for("user", name="Admin!"))
 
-
-@app.route("/view")
-def view():
-    """View all user in db"""
-    return render_template("view.html", users=Users.query.all())
 
 
 class Users(db.Model, UserMixin):
@@ -198,7 +197,22 @@ class Users(db.Model, UserMixin):
         return f"User {self.name} with email {self.email}"
 
 
+class Posts(db.Model):
+    """Posts model for sqlalchemy database"""
+
+    _id = Column("id", Integer, primary_key=True, autoincrement=True)
+    title = Column(String(200), nullable=False, unique=True)
+    content = Column(Text, nullable=False, unique=True)
+    author = Column(String(20), nullable=False)
+    data_created = Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"Post {self.title} with content {self.content}"
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+    posts_utils = PostsUtils(db, Posts)
+    user_utils = UserUtils(db, Users)
     app.run(debug=True)

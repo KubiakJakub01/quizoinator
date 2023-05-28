@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Blog posts...</h1>
+<br/>
+
+<form method="POST" action="{{ url_for('search_post') }}" class="d-flex">
+    {{ form.hidden_tag() }}
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+{% for post in posts %}
+<div class="shadow p-3 mb-5 bg-white rounded">
+    <h2><a href="{{ url_for('view_post', id=post._id)}}">{{ post.title }}</a><br/></h2>
+    <b>content</b>: {{ post.content|safe }}<br/>
+    <b>author</b>: {{ post.author }}<br/>
+    <b>created</b>: {{ post.data_created }}<br/><br/>
+    <a href="{{ url_for('view_post', id=post._id)}}" class="btn btn-primary">View</a>
+</div>
+{% endfor %}
+
+{% endblock %}

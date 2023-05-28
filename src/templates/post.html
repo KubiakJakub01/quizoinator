@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Blog Post</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<style>
+		body {
+			padding: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>{{ post.title }}</h1>
+		<p>By {{ post.author }} on {{ post.data_created }}</p>
+		<div>
+			{{ post.content|safe }}
+		</div>
+        <br/>
+        {% if post.author == current_user.name %}
+            <a href="{{ url_for('update_post', id=post._id)}}" class="btn btn-primary">Edit post</a>
+            <a href="{{ url_for('delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>
+        {% endif %}
+        <a href="/post/view" class="btn btn-primary">Go to blog</a>
+	</div>
+
+</body>
+</html>
+
+{% endblock %}
