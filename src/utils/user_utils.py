@@ -14,6 +14,15 @@ class UserUtils:
         self.Users = Users
         self.user_dir = Path(user_dir)
 
+    def user_home(self):
+        """User home page"""
+        return render_template(str(self.user_dir / "user_home.html"))
+
+    def user(self, id):
+        """User profile"""
+        user = self.Users.query.filter_by(_id=id).first()
+        return render_template(str(self.user_dir / "user.html"), user=user)
+
     def add_user(self, form):
         """Sign up page"""
         name = None

@@ -1,13 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
 <body>
-	<div class="container">
+	<div class="card-body">
 		<h1>{{ post.title }}</h1>
 		<p>By {{ post.author }} on {{ post.data_created }}</p>
-		<div>
+		<div class="card-text">
 			{{ post.content|safe }}
 		</div>
-        <br/>
+		<form  method="POST" action="{{ url_for('add_comment', id=post._id) }}" class="d-flex">
+			{{ form.hidden_tag() }}
+			<input type="text" class="form-control" placeholder="Add a comment" name="comment">
+			<button class="btn btn-outline-secondary" type="submit">Add</button>
+		</form>
+		<section style="background-color: #e7effd;">
+			<div class="container my-5 py-5 text-dark">
+			  <div class="row d-flex justify-content-center">
+				<div class="col-md-11 col-lg-9 col-xl-7">
+				{% for comment in post.comments[::-1] %}
+				  <div class="d-flex flex-start mb-4">
+					<img class="rounded-circle shadow-1-strong me-3"
+					  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar" width="65"
+					  height="65" />
+					<div class="card w-100">
+					  <div class="card-body p-4">
+						<div class="">
+						  <h5>{{ comment.author }}</h5>
+						  <p class="small">{{ comment.date_added }}</p>
+						  <p>{{ comment.comment }}</p>
+						  <div class="d-flex justify-content-between align-items-center">
+							{% if comment.author_id == current_user._id %}
+								<a href="{{ url_for('delete_comment', id=comment._id)}}" class="link-muted"><i class="fas fa-trash me-1"></i> Delete</a>
+							{% endif %}
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  {% endfor %}
+		  </section>
+
         {% if post.author_id == current_user._id %}
             <a href="{{ url_for('update_post', id=post._id)}}" class="btn btn-primary">Edit post</a>
             <a href="{{ url_for('delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>

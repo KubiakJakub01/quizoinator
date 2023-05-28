@@ -8,9 +8,10 @@ from flask import render_template, flash, redirect, url_for
 class PostsUtils:
     """Posts utils"""
 
-    def __init__(self, db, Posts, blog_dir):
+    def __init__(self, db, Posts, PostsLikes, blog_dir):
         self.db = db
         self.Posts = Posts
+        self.PostsLikes = PostsLikes
         self.blog_dir = Path(blog_dir)
 
     def view_posts(self):
@@ -21,7 +22,8 @@ class PostsUtils:
     def view_post(self, id):
         """View post"""
         post = self.Posts.query.get_or_404(id)
-        return render_template(str(self.blog_dir / "post.html"), post=post)
+        return render_template(str(self.blog_dir / "post.html"), 
+                               post=post)
 
     def update_post(self, id, form, author_id):
         """Update post"""
@@ -86,3 +88,29 @@ class PostsUtils:
             )
         else:
             return redirect(url_for("view_posts"))
+
+    def like_post(self, id, author_id):
+        """Like post"""
+        post = self.Posts.query.get_or_404(id)
+        if post.author_id == author_id:
+            flash("You can't like your own post!", "error")
+            return redirect(url_for("view_posts"))
+        post_like = self.PostsLikes.query.filter_by(
+            post_id=id, author_id=author_id
+        ).first()
+        if post_like:
+            flash("You already liked this post!", "error")
+            return redirect(url_for("view_posts"))
+        post_like = self.PostsLikes(post_id=id, author_id=author_id)
+        self.db.session.add(post_like)
+        self.db.session.commit()
+        flash("Post liked!", "info")
+        return redirect(url_for("view_posts"))
+
+    def view_who_liked_post(self, id):
+        """View who liked post"""
+        post = self.Posts.query.get_or_404(id)
+        post_likes = self.PostsLikes.query.filter_by(post_id=id).all()
+        return render_template(
+            str(self.blog_dir / "who_liked_post.html"), post=post, post_likes=post_likes
+        )

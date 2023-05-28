@@ -16,6 +16,14 @@
     <b>author</b>: {{ post.author }}<br/>
     <b>created</b>: {{ post.data_created }}<br/><br/>
     <a href="{{ url_for('view_post', id=post._id)}}" class="btn btn-primary">View</a>
+    <div class="d-flex align-items-center">
+        <a href="{{ url_for('who_liked', id=post._id) }}">
+            <p class="mb-0">{{ post.likes|length }} likes</p>
+        </a>
+        <a href="{{ url_for('like_post', id=post._id) }}">
+            <span class="glyphicon">&#x1F44D;</span>
+        </a>
+    </div>
     {% if current_user._id in admin_list %}
         <a href="{{ url_for('admin_delete_post', id=post._id)}}" class="btn btn-primary btn-danger">Delete post</a>
     {% endif %}

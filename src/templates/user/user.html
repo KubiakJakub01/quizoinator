@@ -2,12 +2,9 @@
 {% block content %}
     <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Username: </strong> {{ current_user.name }}</li>
-        <li class="list-group-item"><strong>Email: </strong> {{ current_user.email }}</li>
-        <li class="list-group-item"><strong>Created: </strong> {{ current_user.data_created }}</li>
+        <li class="list-group-item"><strong>Username: </strong> {{ user.name }}</li>
+        <li class="list-group-item"><strong>Email: </strong> {{ user.email }}</li>
+        <li class="list-group-item"><strong>Created: </strong> {{ user.data_created }}</li>
         </ul>
-        <a href="/logout" class="btn btn-primary">Logout</a>
-        <a href="{{ url_for('update', id=current_user._id)}}" class="btn btn-primary">Update</a>
-        <a href="{{ url_for('delete', id=current_user._id)}}" class="btn btn-primary btn-danger">Delete</a>
     </div>
 {% endblock %}

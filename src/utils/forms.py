@@ -53,3 +53,10 @@ class AdminForm(FlaskForm):
     user_id = StringField("User ID", validators=[DataRequired()])
     reason = StringField("Reason", widget=TextArea())
     submit = SubmitField("Submit")
+
+
+class CommentForm(FlaskForm):
+    """Comment form"""
+
+    comment = StringField("Comment", validators=[DataRequired()])
+    submit = SubmitField("Submit")
