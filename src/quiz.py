@@ -57,7 +57,7 @@ def add_quiz_json():
                 except:
                     return 'Nie udało sie zapisac odpowiedzi!'
 
-    return redirect('/')
+    return redirect(url_for('quiz.index'))
 
 
 @quiz.route('/solve/quiz/<int:quiz_id_parameter>', methods=['POST', 'GET'])
@@ -114,14 +114,18 @@ def add_answer(question_id_parameter):
 @quiz.route('/delete/quiz/<int:quiz_id_parameter>')
 @login_required
 def delete_quiz(quiz_id_parameter):
-    quiz_to_delete = Quiz.query.get_or_404(quiz_id_parameter)
-    try:
-        db.session.delete(quiz_to_delete)
-        db.session.commit()
-        flash(f"Deleted quiz with id: {quiz_id_parameter}")
-        return redirect('/')
-    except:
-        return 'There was an issue deleting quiz'
+    quiz_to_delete = Quiz.query.filter_by(id=quiz_id_parameter).first()
+    questions = Question.query.filter_by(quiz_id=quiz_to_delete.id).all()
+    if questions:
+        for question in questions:
+            answers = Answer.query.filter_by(question_id=question.id).all()
+            if answers:
+                for answer in answers:
+                    db.session.delete(answer)
+            db.session.delete(question)
+    db.session.delete(quiz_to_delete)
+    db.session.commit()
+    return redirect(url_for('quiz.index'))
 
 
 @quiz.route('/edit/quiz/<int:quiz_id_parameter>', methods=['POST', 'GET'])
@@ -158,7 +162,7 @@ def edit_quiz(quiz_id_parameter):
         quiz.title = quizTile
         quiz.description = quizDescription
         db.session.commit()
-        return redirect('/')
+        return redirect(url_for('quiz.index'))
     else:
         return render_template('quiz_edit.html', quiz=quiz, questions=questions)
 
