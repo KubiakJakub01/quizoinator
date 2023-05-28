@@ -2,8 +2,8 @@
 from datetime import timedelta
 
 # Import flask and template operators
-from flask import Flask, redirect, url_for, render_template, session, flash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask import Flask, redirect, url_for, render_template, session, flash, request
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
@@ -97,6 +97,53 @@ def login():
         flash("This user doesn't exist!", "error")
         return redirect(url_for("login"))
     return render_template("login.html", form=form)
+
+
+@app.route("/update/<int:id>", methods=["POST", "GET"])
+@login_required
+def update(id):
+    """Update user in db"""
+    form = UserForm()
+    name_to_update = Users.query.get_or_404(id)
+    if request.method == "POST":
+        name_to_update.name = form.name.data
+        name_to_update.email = form.email.data
+        try:
+            db.session.commit()
+            flash("User updated!", "info")
+            return render_template("user.html")
+        except:
+            flash("There was an issue updating your task", "error")
+            return render_template("update.html", 
+                                   form=form,
+                                   name_to_update=name_to_update)
+    else:
+        form.name.data = name_to_update.name
+        form.email.data = name_to_update.email
+        return render_template("update.html", 
+                               form=form,
+                               name_to_update=name_to_update,
+                               id=id)
+
+
+@app.route("/delete/<int:id>")
+@login_required
+def delete(id):
+    """Delete user from db"""
+    name_to_delete = Users.query.get_or_404(id)
+    id = current_user._id
+    if id == name_to_delete._id:
+        try:
+            db.session.delete(name_to_delete)
+            db.session.commit()
+            flash("User deleted!", "info")
+            return redirect(url_for("user"))
+        except:
+            flash("There was an issue deleting your task", "error")
+            return redirect(url_for("user"))
+    else:
+        flash("You can't delete this profile!", "error")
+        return redirect(url_for("user"))
 
 
 @app.route("/logout")

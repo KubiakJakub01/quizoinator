@@ -7,5 +7,7 @@
         <li class="list-group-item"><strong>Created: </strong> {{ current_user.data_created }}</li>
         </ul>
         <a href="/logout" class="btn btn-primary">Logout</a>
+        <a href="{{ url_for('update', id=current_user._id)}}" class="btn btn-primary">Update</a>
+        <a href="{{ url_for('delete', id=current_user._id)}}" class="btn btn-primary btn-danger">Delete</a>
     </div>
 {% endblock %}
