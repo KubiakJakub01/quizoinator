@@ -7,8 +7,7 @@ from src.utils.admin_utils import AdminUtils
 from src.models import Admin, Users, Posts
 from src.utils.forms import AdminForm
 
-admin = Blueprint('admin', __name__,
-                    template_folder=os.path.join('templates', 'admin'))
+admin = Blueprint("admin", __name__, template_folder=os.path.join("templates", "admin"))
 admin_utils = AdminUtils(db, Admin, Users, Posts)
 
 
@@ -41,6 +40,7 @@ def view_admins():
     """View all admins in db"""
     id = current_user._id
     return admin_utils.view_admins(id)
+
 
 @admin.route("/delete_user/<int:id>")
 @login_required

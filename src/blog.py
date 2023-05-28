@@ -8,10 +8,10 @@ from src.utils.comments_utils import CommentsUtils
 from src.models import Posts, Comments, PostsLikes
 from src.utils.forms import PostForm, SearchForm, CommentForm
 
-blog = Blueprint('blog', __name__,
-                    template_folder=os.path.join('templates', 'blog'))
+blog = Blueprint("blog", __name__, template_folder=os.path.join("templates", "blog"))
 posts_utils = PostsUtils(db, Posts, PostsLikes)
 comment_utils = CommentsUtils(db, Comments)
+
 
 @blog.route("/add", methods=["POST", "GET"])
 @login_required
@@ -70,6 +70,7 @@ def like_post(id):
 def who_liked(id):
     """Who liked post"""
     return posts_utils.view_who_liked_post(id)
+
 
 @blog.route("/comment/<int:id>", methods=["POST"])
 @login_required
