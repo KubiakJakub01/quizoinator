@@ -1,17 +1,16 @@
 ﻿{% extends 'base.html' %}
 
 {% block head%}
-<link href="{{ url_for('static', filename='quiz/styleEditQuiz.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='styleEditQuiz.css') }}" rel="stylesheet">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="{{ url_for('static', filename='quiz/jquery.scrollTo.min.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='quiz/style.css') }}">
+<script src="{{ url_for('static', filename='jquery.scrollTo.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 <a href="#" class="scrollup"></a>
 <div class="container">
-    <form action="{{ url_for('quiz.edit_quiz',quiz_id_parameter=quiz.id) }}"
+    <form action="{{ url_for('main.edit_quiz',quiz_id_parameter=quiz.id) }}"
           method="POST">
         <holder id="{{quiz.id}}"></holder>
         <h1>Edytuj quiz</h1>
@@ -68,7 +67,7 @@
 </div>
 <script>
     $('#cancel_editing_btn').click(function () {
-        window.location.href = "{{ url_for('quiz.index') }}";
+        window.location.href = "{{ url_for('main.index') }}";
     });
 
     $('#finsih_deleting_btn').click(function () {

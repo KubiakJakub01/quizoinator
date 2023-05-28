@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Quiz{% endblock %}
+{% block head %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='jquery.scrollTo.min.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+<a href="#" class="scrollup"></a>
+<div class="container">
+    <h1>CREATE A NEW QUIZ</h1>
+    <form method="POST" action="{{ url_for('main.quiz_create') }}" id="posting">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            <h3>{{ form.title.label }}</h3>
+            {{ form.title(class="form-control", placeholder="Enter quiz title") }}
+            {% if form.title.errors %}
+            <ul class="errors">
+                {% for error in form.title.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <h3>{{ form.description.label }}</h3>
+            {{ form.description(class="form-control", placeholder="Enter quiz description") }}
+            {% if form.description.errors %}
+            <ul class="errors">
+                {% for error in form.description.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <h3>{{ form.questions.label }}</h3>
+            {{ form.questions(class="form-control", placeholder="Enter question",name="Questions") }}
+            <button id="add-question" type="button" class="btn-primary">Add Question</button>
+            <div id="questions-container"></div>
+            <br>
+        </div>
+        <script>
+            // Add a new question field when the "Add Question" button is clicked
+            var questionsCounter = 0;
+            var questionsContainer = document.getElementById("questions-container");
+            var addQuestionButton = document.getElementById("add-question");
+            addQuestionButton.addEventListener("click", function () {
+
+                var separatingLine = document.createElement("div");
+                separatingLine.setAttribute("class", "justALine");
+                questionsContainer.appendChild(separatingLine);
+
+                var singleQuestionContainer = document.createElement("div");
+                questionsCounter = questionsCounter + 1;
+                singleQuestionContainer.setAttribute("id", questionsCounter);
+                singleQuestionContainer.setAttribute("name", "questionNo" + questionsCounter);
+                questionsContainer.appendChild(singleQuestionContainer);
+
+                var newQuestionField = document.createElement("textarea");
+                newQuestionField.setAttribute("name", "questions");
+                newQuestionField.setAttribute("class", "form-control");
+                newQuestionField.setAttribute("required", true);
+                newQuestionField.setAttribute("placeholder", "Enter question here");
+                var br = document.createElement('br');
+
+                singleQuestionContainer.appendChild(newQuestionField);
+
+                var addAnswerButton = document.createElement("input");
+                addAnswerButton.setAttribute("type", "button");
+                addAnswerButton.setAttribute("class", "btn-primary");
+                addAnswerButton.setAttribute("value", " Add Answer");
+                singleQuestionContainer.innerHTML += "<br/>";
+                singleQuestionContainer.appendChild(addAnswerButton);
+                singleQuestionContainer.appendChild(br);
+                var br = document.createElement('br');
+                singleQuestionContainer.appendChild(br);
+
+                addAnswerButton.addEventListener("click", function () {
+
+                    let newAnswer = document.createElement("textarea");
+
+                    let isItTrue = document.createElement("input");
+                    let numberOfQuestion = singleQuestionContainer.getAttribute("id");
+                    newAnswer.setAttribute("class", numberOfQuestion);
+                    newAnswer.setAttribute("style", "margin-left:2%; margin-right:auto;");
+                    newAnswer.setAttribute("name", "answer_"+questionsCounter);
+                    isItTrue.setAttribute("class", numberOfQuestion);
+                    isItTrue.setAttribute("style", "margin-top: 2%; margin-bottom:auto;");
+                    isItTrue.setAttribute("type", "checkbox");
+                    isItTrue.setAttribute("name", "chk_"+questionsCounter);
+                    newAnswer.setAttribute("required", true);
+
+                    singleQuestionContainer.appendChild(newAnswer);
+                    singleQuestionContainer.appendChild(isItTrue);
+                    var br = document.createElement('br');
+                    singleQuestionContainer.appendChild(br);
+
+                });
+
+            });
+        </script>
+        <script>
+
+            jQuery(function ($) {
+                $.scrollTo(0);
+
+
+                $('#link3').click(function () { $.scrollTo($('.container'), 500); });
+                $('.scrollup').click(function () { $.scrollTo($('body'), 1000); });
+            }
+            );
+
+            $(window).scroll(
+                function () {
+                    if ($(this).scrollTop() > 300) $('.scrollup').fadeIn();
+                    else $('.scrollup').fadeOut();
+                }
+            );
+        </script>
+        <br />
+        <br />
+        <button type="submit" class="btn-primary">Create Quiz</button>
+    </form>
+
+</div>
+{% endblock %}

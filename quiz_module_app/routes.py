@@ -1,24 +1,16 @@
-"""Module for quiz routes."""
-import os
-
+import string
 from flask import Blueprint, render_template, flash, redirect, url_for, request, flash, json, session
-from flask_login import login_required, current_user
+from sqlalchemy import MetaData
 
-from src import db
-from src.models import Question, Quiz, Answer
-from src.utils.forms import QuizForm
-
-template_folder = os.path.join("templates", "quiz")
-static_folder = os.path.join("static", "quiz")
-
-quiz = Blueprint('quiz',
-                 __name__,
-                 template_folder=template_folder,
-                 static_folder=static_folder)
+from .extensions import db
+from .models import Question, Quiz, Answer
+from .forms import QuizForm, QuestionForm, AnswerForm
 
 
-@quiz.route("/add/quiz/json", methods=['POST'])
-@login_required
+main = Blueprint('main', __name__)
+
+
+@main.route("/add/quiz/json", methods=['POST'])
 def add_quiz_json():
     response_arr = json.loads(request.data)
     quiz_title_desc = response_arr[0]
@@ -60,7 +52,7 @@ def add_quiz_json():
     return redirect('/')
 
 
-@quiz.route('/solve/quiz/<int:quiz_id_parameter>', methods=['POST', 'GET'])
+@main.route('/solve/quiz/<int:quiz_id_parameter>', methods=['POST', 'GET'])
 def solve_quiz(quiz_id_parameter):
     quiz = Quiz.query.filter_by(id=quiz_id_parameter).first()
     questions = Question.query.filter_by(quiz_id=quiz.id).all()
@@ -90,8 +82,7 @@ def solve_quiz(quiz_id_parameter):
         return render_template('quiz_solve.html', quiz=quiz, questions=questions)
 
 
-@quiz.route('/add/answer/<int:question_id_parameter>', methods=['POST', 'GET'])
-@login_required
+@main.route('/add/answer/<int:question_id_parameter>', methods=['POST', 'GET'])
 def add_answer(question_id_parameter):
     question = Question.query.filter_by(id=question_id_parameter).first()
     if request.method == 'POST':
@@ -103,7 +94,7 @@ def add_answer(question_id_parameter):
         try:
             db.session.add(new_answer)
             db.session.commit()
-            return redirect(url_for('quiz.edit_quiz', quiz_id_parameter=question.quiz_id))
+            return redirect(url_for('main.edit_quiz', quiz_id_parameter=question.quiz_id))
         except:
             return 'There was an issue adding your task'
 
@@ -111,8 +102,7 @@ def add_answer(question_id_parameter):
         return render_template('add_answer.html', question=question)
 
 
-@quiz.route('/delete/quiz/<int:quiz_id_parameter>')
-@login_required
+@main.route('/delete/quiz/<int:quiz_id_parameter>')
 def delete_quiz(quiz_id_parameter):
     quiz_to_delete = Quiz.query.get_or_404(quiz_id_parameter)
     try:
@@ -124,8 +114,7 @@ def delete_quiz(quiz_id_parameter):
         return 'There was an issue deleting quiz'
 
 
-@quiz.route('/edit/quiz/<int:quiz_id_parameter>', methods=['POST', 'GET'])
-@login_required
+@main.route('/edit/quiz/<int:quiz_id_parameter>', methods=['POST', 'GET'])
 def edit_quiz(quiz_id_parameter):
 
     quiz = Quiz.query.filter_by(id=quiz_id_parameter).first()
@@ -136,6 +125,7 @@ def edit_quiz(quiz_id_parameter):
         quizTile = format(request.form['quizTitle'])
         quizDescription = format(request.form['quizDescription'])
 
+        #try:
         if questions:
             a = questions[0].id
             for question in questions:
@@ -159,11 +149,14 @@ def edit_quiz(quiz_id_parameter):
         quiz.description = quizDescription
         db.session.commit()
         return redirect('/')
+        #except:
+            #return 'There was an issue adding your task'
+
     else:
         return render_template('quiz_edit.html', quiz=quiz, questions=questions)
 
 
-@quiz.route('/', methods=['GET','POST'])
+@main.route('/', methods=['GET','POST'])
 def index():
     
     if request.method == 'POST':
@@ -175,8 +168,7 @@ def index():
         return render_template('index.html', quizes=quizes)
 
 
-@quiz.route('/quiz/create/', methods=['GET'])
-@login_required
+@main.route('/quiz/create/', methods=['GET'])
 def quiz_create():
     quizForm = QuizForm()
     return render_template('quiz_create.html', form=quizForm)

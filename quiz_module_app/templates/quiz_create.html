@@ -1,9 +1,9 @@
 {% extends 'base.html' %} {% block title %}Create Quiz{% endblock %} {% block
 head %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="{{ url_for('static', filename='quiz/jquery.scrollTo.min.js') }}"></script>
-<link href="{{ url_for('static', filename='quiz/styleCreateQuiz.css') }}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='quiz/style.css') }}">
+<script src="{{ url_for('static', filename='jquery.scrollTo.min.js') }}"></script>
+<link href="{{ url_for('static', filename='styleCreateQuiz.css') }}" rel="stylesheet">
+
 {% endblock %} {% block content %}
 <a href="#" class="scrollup"></a>
 <div class="container">
@@ -82,7 +82,7 @@ head %}
         response_arr.push(questions_arr);
         response_arr.push(answers_arr);
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "{{ url_for('quiz.add_quiz_json') }}");
+        xhr.open("POST", "{{ url_for('main.add_quiz_json') }}");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function () {
           if (xhr.status === 200) {

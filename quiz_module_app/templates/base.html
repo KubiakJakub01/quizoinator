@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My App{% endblock %}</title>
-    <link rel="stylesheet" href="static/quiz/style.css" type="text/css">
+    <link rel="stylesheet" href="static/style.css" type="text/css">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,8 +17,8 @@
         <nav id="navigation-bar">
             <ul>
                 <li class="logo"></li>
-                <li><a href="{{ url_for('quiz.index') }}">Main Page - Find A Quiz</a></li>
-                <li><a href="{{ url_for('quiz.quiz_create') }}">Create Your Own Quiz</a></li>
+                <li><a href="{{ url_for('main.index') }}">Main Page - Find A Quiz</a></li>
+                <li><a href="{{ url_for('main.quiz_create') }}">Create Your Own Quiz</a></li>
             </ul>
         </nav>
     </header>
@@ -34,3 +35,4 @@
         {% block content %}{% endblock %}
     </main>
 </body>
+</html>

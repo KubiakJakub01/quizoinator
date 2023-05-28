@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
 {% block head%}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='quiz/style.css') }}">
-    <link href="{{ url_for('static', filename='quiz/styleIndex.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styleIndex.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='quiz/jquery.scrollTo.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.scrollTo.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +20,7 @@
         {% for quiz in quizes[:10] %}
         
         <div class="quizOptions">
-            <a href="{{ url_for('quiz.solve_quiz',quiz_id_parameter=quiz.id) }}">
+            <a href="{{ url_for('main.solve_quiz',quiz_id_parameter=quiz.id) }}">
                 <div class="quizView">
 
                     {{ quiz.title }}
@@ -30,7 +29,7 @@
 
                 </div>
             </a>
-            <a href="{{ url_for('quiz.edit_quiz',quiz_id_parameter=quiz.id) }}">
+            <a href="{{ url_for('main.edit_quiz',quiz_id_parameter=quiz.id) }}">
                 <div class="quizEdit"> ... </div>
             </a>
             <div style="clear:both"></div>
