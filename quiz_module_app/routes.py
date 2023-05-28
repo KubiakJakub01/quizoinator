@@ -60,6 +60,8 @@ def solve_quiz(quiz_id_parameter):
     if request.method == 'POST':
         correct_answers = []
         user_answers = []
+        if len(questions)==0:
+            return render_template('display_score.html', score='Ciezko powiedziec')
         for question in questions:
             answers = Answer.query.filter_by(question_id=question.id).all()
             print("answers: ",answers)
@@ -71,7 +73,6 @@ def solve_quiz(quiz_id_parameter):
                   request.form.getlist(str(question.id)))
             for user_answer in request.form.getlist(str(question.id)):
                 user_answers.append(int(user_answer))
-        print('user_answers: ',user_answers)
         incorrect_user_answers = 0
         if len(user_answer) > len(correct_answers):
             incorrect_user_answers = len(user_answer) - len(correct_answers)
