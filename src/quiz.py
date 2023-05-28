@@ -165,10 +165,10 @@ def edit_quiz(quiz_id_parameter):
 
 @quiz.route('/', methods=['GET','POST'])
 def index():
-    
+
     if request.method == 'POST':
        searched_quiz = format(request.form['searchQuiz'])
-       quizes = Quiz.query.filter(Quiz.title.ilike(f'%{searched_quiz}%')).all()
+       quizes = Quiz.query.filter(Quiz.title.like("%" + searched_quiz + "%")).all()
        return render_template('index.html', quizes=quizes)
     else:
         quizes = Quiz.query.all()

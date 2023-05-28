@@ -11,7 +11,7 @@
     <a href="#" class="scrollup"></a>
     <div id="searchField" class="container">
 
-        <form action="/" method="POST">
+        <form action="{{ url_for('quiz.index') }}" method="POST">
             <input  id="searchQuiz" name="searchQuiz" type="search" placeholder="Wyszukaj quiz" />
             <input type="submit" name="search_btn" value="Szukaj">
         </form>
