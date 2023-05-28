@@ -1,0 +1,10 @@
+﻿body {
+}
+
+#quizView{
+    background-color: white;
+    width: 80%;
+    min-height: 30px;
+
+    font-size: 14px;
+}

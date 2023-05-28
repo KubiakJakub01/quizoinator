@@ -1,0 +1,189 @@
+{% extends 'base.html' %} {% block title %}Create Quiz{% endblock %} {% block
+head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='jquery.scrollTo.min.js') }}"></script>
+<link href="{{ url_for('static', filename='styleCreateQuiz.css') }}" rel="stylesheet">
+
+{% endblock %} {% block content %}
+<a href="#" class="scrollup"></a>
+<div class="container">
+  <h1>CREATE A NEW QUIZ</h1>
+  <form>
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <h3>{{ form.title.label }}</h3>
+      {{ form.title(class="form-control", placeholder="Enter quiz title") }}
+    </div>
+    <div class="form-group">
+      <h3>{{ form.description.label }}</h3>
+      {{ form.description(class="form-control", placeholder="Enter quiz description") }}
+    </div>
+    <form>
+      <button
+        id="add-answer"
+        type="button"
+        class="btn-primary"
+        onclick="addAnswer(this.form)"
+      >
+        Add Answer
+      </button>
+      <button
+        id="add-question"
+        type="button"
+        class="btn-primary"
+        onclick="addQuestion(this.form)"
+      >
+        Add Question
+      </button>
+      <div name="questions_container"></div>
+    </form>
+    <script>
+      var questionId = 0;
+      var answerId = 0;
+      var questions_arr = [];
+      var answers_arr = [];
+
+      // This is the response array that will contain object with quiz title
+      // and description, array with all the questions and array with answers
+      var response_arr = [];
+
+      function addQuiz(form) {
+        for (var i = 1; i <= questionId; i++) {
+          var question = document.getElementsByName("question_" + i)[0];
+          if (question) {
+            questions_arr.push({
+              id: i,
+              question_text: question.value,
+            });
+          }
+          var answersText = document.getElementsByName(
+            "answer_to_question_" + i
+          );
+          var answersCheckbox = document.getElementsByName(
+            "checkbox_to_question_" + i
+          );
+          for (var j = 0; j <= answersText.length; j++) {
+            var isAnswerCorrect = 0;
+            answerText = answersText[j];
+            answerCheckbox = answersCheckbox[j];
+            if (answerText) {
+              answers_arr.push({
+                answerToQuestion: i,
+                answer_text: answerText.value,
+                is_correct: answerCheckbox.getAttribute("isItTrue"),
+              });
+            }
+          }
+        }
+
+        var titleText = document.getElementById("title").value;
+        var descriptionText = document.getElementById("description").value;
+        response_arr.push({ title: titleText, description: descriptionText});
+        response_arr.push(questions_arr);
+        response_arr.push(answers_arr);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{{ url_for('main.add_quiz_json') }}");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            alert("Success!");
+          } else {
+            alert("Request failed.  Returned status of " + xhr.status);
+          }
+        };
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+            window.location.href = "/";
+          }
+        };
+
+        xhr.send(JSON.stringify(response_arr));
+      }
+
+      function addAnswer(form) {
+        answerId++;
+        let newAnswer = document.createElement("textarea");
+        let br = document.createElement("br");
+        let isItTrue = document.createElement("input");
+
+          newAnswer.setAttribute("name", "answer_to_question_" + questionId);
+          newAnswer.setAttribute("class", "answerClass");
+        isItTrue.setAttribute("type", "checkbox");
+        isItTrue.setAttribute("name", "checkbox_to_question_" + questionId);
+        isItTrue.setAttribute(
+          "id",
+          "chk_" + answerId + "_to_question_" + questionId
+        );
+        isItTrue.setAttribute(
+          "value",
+          "chk_" + answerId + "_to_question_" + questionId
+        );
+        isItTrue.setAttribute("class", "isItTrueClass");
+        isItTrue.setAttribute("isItTrue", 0);
+        isItTrue.addEventListener("change", (event) => {
+          if (event.currentTarget.checked) {
+            isItTrue.setAttribute("isItTrue", 1);
+          } else {
+            isItTrue.setAttribute("isItTrue", 0);
+          }
+        });
+
+
+        document.getElementsByName("questionContainer_" + questionId)[0]
+           .appendChild(br);
+        document
+          .getElementsByName("questionContainer_" + questionId)[0]
+          .appendChild(newAnswer);
+        document
+          .getElementsByName("questionContainer_" + questionId)[0]
+              .appendChild(isItTrue);
+
+        answersCount++;
+        answerId++;
+      }
+
+      function checkThisBox(checkbox) {
+        console.log("checkThisBox");
+      }
+
+      // Add a new question field when the "Add Question" button is clicked
+      function addQuestion(form) {
+        answerId = 0;
+        questionId++;
+
+        var singleQuestionContainer = document.createElement("div");
+        singleQuestionContainer.setAttribute(
+          "name",
+          "questionContainer_" + questionId
+        );
+        
+        var br = document.createElement("br");
+        singleQuestionContainer.appendChild(br);
+
+        let newQuestion = document.createElement("textarea");
+        newQuestion.setAttribute("name", "question_" + questionId);
+        newQuestion.setAttribute("class", "questionClass");
+        singleQuestionContainer.appendChild(newQuestion);
+        document
+          .getElementsByName("questions_container")[0]
+          .appendChild(singleQuestionContainer);
+        document.appendChild(br);
+
+        var question_text = form.elements["question_text"].value;
+        var myArray = [question_text];
+      }
+    </script>
+    <br />
+    <br />
+    <button
+      id="create-quiz-btn"
+      type="button"
+      class="btn-primary"
+      onclick="addQuiz(this.form)"
+    >
+      Add Quiz
+    </button>
+  </form>
+</div>
+{% endblock %}
