@@ -2,14 +2,54 @@
 
 ## Setup
 
-Every command is supposed to be run from the root of the project.
-Setup is described for Linux, but should be similar for other OS.
+After successful setup, the application will be available at http://localhost:5000
+
+### Prerequisites:
+
+#### Clone the repository
+
+```bash
+git clone https://github.com/KubiakJakub01/quizoinator.git 
+cd quizoinator
+```
+
+#### Install python3
+
+Linux:
+```bash
+sudo apt install python3
+```
+
+Windows:
+```bash
+https://www.python.org/downloads/windows/
+```
+
+MacOS:
+https://www.python.org/downloads/mac-osx/
+
+For MacOS you can also use Homebrew:
+```bash
+brew install python3
+```
+For more information visit:
+```bash
+https://docs.python-guide.org/starting/install3/osx/
+```
+
+#### Install pip
+
+Follow the instructions on: https://pip.pypa.io/en/stable/installation/ to install pip.
+
+#### Docker (optional)
+
+Follow the instructions on: https://docs.docker.com/get-docker/ to install docker.
 
 ### With python virtualenv
 
 Create a virtual environment and install the requirements:
 
-#### Linux
+#### Linux and MacOS
 
 ```bash
 python3 -m venv .venv
