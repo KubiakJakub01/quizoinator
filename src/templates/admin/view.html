@@ -19,7 +19,7 @@
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.data_created}}</td>
-                    <td><a href="{{ url_for('admin_delete_user', id=user._id)}}" class="btn btn-primary btn-danger">Delete user</a></td>
+                    <td><a href="{{ url_for('admin.admin_delete_user', id=user._id)}}" class="btn btn-primary btn-danger">Delete user</a></td>
                 </tr>
             {% endfor %}
         </tbody>

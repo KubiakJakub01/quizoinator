@@ -29,7 +29,7 @@ def init_db(app):
 
 def init_login_manager(app):
     login_menager.init_app(app)
-    login_menager.login_view = "login"
+    login_menager.login_view = "users.login"
     return login_menager
 
 

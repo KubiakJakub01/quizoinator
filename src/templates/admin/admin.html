@@ -7,8 +7,8 @@
         <li class="list-group-item"><strong>Email: </strong> {{ current_user.email }}</li>
         <li class="list-group-item"><strong>Created: </strong> {{ current_user.data_created }}</li>
         </ul>
-        <a href="{{ url_for('view_users', id=current_user._id)}}" class="btn btn-primary">View users</a>
-        <a href="{{ url_for('add_admin', id=current_user._id)}}" class="btn btn-primary">Add admin</a>
-        <a href="{{ url_for('view_admins', id=current_user._id)}}" class="btn btn-primary">View admins</a>
+        <a href="{{ url_for('admin.view_users', id=current_user._id)}}" class="btn btn-primary">View users</a>
+        <a href="{{ url_for('admin.add_admin', id=current_user._id)}}" class="btn btn-primary">Add admin</a>
+        <a href="{{ url_for('admin.view_admins', id=current_user._id)}}" class="btn btn-primary">View admins</a>
     </div>
 {% endblock %}
