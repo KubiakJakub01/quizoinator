@@ -1,14 +1,12 @@
 """Module with database models"""
-from . import db
-
+import enum
 # Import flask_login
 from flask_login import UserMixin
-
 # Import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
-
 # Import password / encryption helper tools
 from werkzeug.security import generate_password_hash, check_password_hash
+from . import db
 
 
 class Users(db.Model, UserMixin):
@@ -103,3 +101,29 @@ class PostsLikes(db.Model):
 
     def __repr__(self):
         return f"User {self.author_id} liked post {self.post_id}"
+
+
+class relationship_status(enum.Enum):
+    """Enum for relationship status"""
+
+    pending = "pending"
+    accepted = "accepted"
+    rejected = "rejected"
+
+
+class Relationship(db.Model):
+    """Relationship model for sqlalchemy database"""
+
+    _id = Column("id", Integer, primary_key=True, autoincrement=True)
+    # Foreign key to Users
+    user_a_id = Column(Integer, ForeignKey("users.id"))
+    # Foreign key to Users
+    user_b_id = Column(Integer, ForeignKey("users.id"))
+    status = Column(db.Enum(relationship_status), default=relationship_status.pending, nullable=False)
+    date_added = Column(db.DateTime, default=db.func.current_timestamp())
+
+    user_a = db.relationship("Users", foreign_keys=[user_a_id], backref="user_a")
+    user_b = db.relationship("Users", foreign_keys=[user_b_id], backref="user_b")
+
+    def __repr__(self):
+        return f"User {self.user_a.name} is friends with {self.user_b.name}"
