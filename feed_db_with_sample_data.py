@@ -1,19 +1,15 @@
 """Script to feed the database with sample data"""
-import uuid
 import shutil
 import argparse
 from pathlib import Path
-from datetime import datetime
 from random import randint, choice
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 
-from src import db
 from src.models import Users, Posts, Admin, Comments, PostsLikes, Relationship
-from src.utils.user_utils import UserUtils
 
 
 
