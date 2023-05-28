@@ -12,52 +12,51 @@ from werkzeug.security import generate_password_hash
 from src.models import Users, Posts, Admin, Comments, PostsLikes, Relationship
 
 
-
 def get_params():
     parser = argparse.ArgumentParser(description="Feed the database with sample data")
     parser.add_argument(
         "--db_url",
         type=str,
         default="instance/database.db",
-        help="Path to the database file",
+        help="Path to the database file. Default: instance/database.db",
     )
     parser.add_argument(
         "-p",
         "--pictures_dir",
         type=Path,
-        default="pictures",
-        help="Directory containing the profile pictures",
+        default="images/sample_avatars",
+        help="Directory containing the profile pictures. Default: images/sample_avatars",
     )
     parser.add_argument(
         "-s",
         "--pictures_save_dir",
         type=Path,
         default="src/static/user/images",
-        help="Directory to save the profile pictures",
+        help="Directory to save the profile pictures. Default: src/static/user/images",
     )
     parser.add_argument(
         "--posts_num",
         type=int,
         default=10,
-        help="Number of posts to create",
+        help="Number of posts to create. Default: 10",
     )
     parser.add_argument(
         "--comments_num",
         type=int,
         default=30,
-        help="Number of comments to create",
+        help="Number of comments to create. Default: 30",
     )
     parser.add_argument(
         "--likes_num",
         type=int,
         default=50,
-        help="Number of likes to create",
+        help="Number of likes to create. Default: 50",
     )
     parser.add_argument(
         "--relationships_num",
         type=int,
         default=20,
-        help="Number of relationships to create",
+        help="Number of relationships to create. Default: 20",
     )
     return parser.parse_args()
 
@@ -131,6 +130,7 @@ def create_sample_users(pictures_dir: Path):
 
 def submit_users(session, users: list, pictures_save_dir: Path):
     """Add users to the database"""
+
     def _process_picture(picture: Path):
         """Process picture"""
         profile_filename = secure_filename(picture.name)
@@ -138,12 +138,13 @@ def submit_users(session, users: list, pictures_save_dir: Path):
         if pictures_save_dir / pic_name != picture:
             shutil.copy(str(picture), str(pictures_save_dir / pic_name))
         return pic_name
+
     for user in users:
         new_user = Users(
             name=user["name"],
             email=user["email"],
             password_hash=generate_password_hash(user["password"]),
-            profile_picture=_process_picture(user["profile_picture"])
+            profile_picture=_process_picture(user["profile_picture"]),
         )
         session.add(new_user)
     session.commit()
@@ -157,7 +158,7 @@ def create_sample_posts(users_num: int, posts_num: int):
             {
                 "title": f"Post {i+1}",
                 "content": f"This is the content of post {i+1}.",
-                "author_id": randint(1, users_num)
+                "author_id": randint(1, users_num),
             }
         )
     return posts
@@ -167,9 +168,7 @@ def submit_posts(session, posts: list):
     """Add posts to the database"""
     for post in posts:
         new_post = Posts(
-            title=post["title"],
-            content=post["content"],
-            author_id=post["author_id"],
+            title=post["title"], content=post["content"], author_id=post["author_id"]
         )
         session.add(new_post)
     session.commit()
@@ -177,22 +176,15 @@ def submit_posts(session, posts: list):
 
 def create_sample_admins():
     """Create sample admins"""
-    admins = [
-        {
-            "user_id": 1,
-            "added_by": 2,
-            "reason": "For administrative purposes.",
-        },
-    ]
+    admins = [{"user_id": 1, "added_by": 2, "reason": "For administrative purposes."}]
     return admins
+
 
 def submit_admins(session, admins: list):
     """Add admins to the database"""
     for admin in admins:
         new_admin = Admin(
-            user_id=admin["user_id"],
-            added_by=admin["added_by"],
-            reason=admin["reason"],
+            user_id=admin["user_id"], added_by=admin["added_by"], reason=admin["reason"]
         )
         session.add(new_admin)
     session.commit()
@@ -229,10 +221,7 @@ def create_sample_post_likes(users_num: int, posts_num: int, likes_num: int):
     post_likes = []
     for i in range(likes_num):
         post_likes.append(
-            {
-                "post_id": randint(1, posts_num),
-                "author_id": randint(1, users_num),
-            }
+            {"post_id": randint(1, posts_num), "author_id": randint(1, users_num)}
         )
     return post_likes
 
@@ -241,8 +230,7 @@ def submit_post_likes(session, post_likes: list):
     """Add post likes to the database"""
     for post_like in post_likes:
         new_post_like = PostsLikes(
-            post_id=post_like["post_id"],
-            author_id=post_like["author_id"],
+            post_id=post_like["post_id"], author_id=post_like["author_id"]
         )
         session.add(new_post_like)
     session.commit()
@@ -273,6 +261,7 @@ def submit_relationships(session, relationships: list):
         )
         session.add(new_relationship)
     session.commit()
+
 
 if __name__ == "__main__":
     # Get parameters
