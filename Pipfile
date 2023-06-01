@@ -12,6 +12,8 @@ black = "*"
 graphviz = "*"
 pydot = "*"
 sqlalchemy-schemadisplay = "*"
+sqlalchemy = "*"
+pandas = "*"
 
 [dev-packages]
 
