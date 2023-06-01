@@ -61,10 +61,11 @@ def solve_quiz(quiz_id_parameter):
         correct_answers = []
         user_answers = []
         if len(questions)==0:
-            return render_template('display_score.html', score='Ciezko powiedziec')
+            return render_template('display_score.html', score='Ciężko powiedzieć')
         for question in questions:
             answers = Answer.query.filter_by(question_id=question.id).all()
-            print("answers: ",answers)
+            if len(answers)==0:
+                return render_template('display_score.html', score='Ciężko powiedzieć')
             for answer in answers:
                 if answer.is_correct is True:
                     correct_answers.append(answer.id)

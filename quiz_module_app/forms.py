@@ -4,8 +4,8 @@ from wtforms import StringField, TextAreaField, IntegerField, SubmitField, Boole
 from wtforms.validators import DataRequired, Length
 
 class QuizForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired(), Length(max=100)])
-    description = TextAreaField('Description', validators=[Length(max=500)])
+    title = StringField('Tytuł', validators=[DataRequired(), Length(max=100)])
+    description = TextAreaField('Opis', validators=[Length(max=500)])
     num_questions = IntegerField('Number of Questions', validators=[DataRequired()])
     questions = FieldList(TextAreaField('Questions',validators=[DataRequired(),Length(max=4)]))
     answers = FieldList(TextAreaField('Answers',validators=[DataRequired(),Length(max=4)]))

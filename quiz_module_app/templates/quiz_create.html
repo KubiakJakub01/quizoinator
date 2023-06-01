@@ -7,16 +7,16 @@ head %}
 {% endblock %} {% block content %}
 <a href="#" class="scrollup"></a>
 <div class="container">
-  <h1>CREATE A NEW QUIZ</h1>
+  <h1>STWÓRZ SWÓJ QUIZ</h1>
   <form>
     {{ form.hidden_tag() }}
     <div class="form-group">
       <h3>{{ form.title.label }}</h3>
-      {{ form.title(class="form-control", placeholder="Enter quiz title") }}
+      {{ form.title(class="form-control", placeholder="Wpisz tytuł Quizu") }}
     </div>
     <div class="form-group">
       <h3>{{ form.description.label }}</h3>
-      {{ form.description(class="form-control", placeholder="Enter quiz description") }}
+      {{ form.description(class="form-control", placeholder="Wpisz opis Quizu") }}
     </div>
     <form>
       <button
@@ -25,7 +25,7 @@ head %}
         class="btn-primary"
         onclick="addAnswer(this.form)"
       >
-        Add Answer
+        Dodaj odpowiedź
       </button>
       <button
         id="add-question"
@@ -33,7 +33,7 @@ head %}
         class="btn-primary"
         onclick="addQuestion(this.form)"
       >
-        Add Question
+        Dodaj pytanie
       </button>
       <div name="questions_container"></div>
     </form>
@@ -182,7 +182,7 @@ head %}
       class="btn-primary"
       onclick="addQuiz(this.form)"
     >
-      Add Quiz
+      Dodaj Quiz
     </button>
   </form>
 </div>
