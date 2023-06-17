@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head%}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='quiz/style.css') }}">
+    <link href="{{ url_for('static', filename='quiz/styleIndex.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='quiz/jquery.scrollTo.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <a href="#" class="scrollup"></a>
+    <div id="searchField" class="container">
+
+        <form action="{{ url_for('quiz.index') }}" method="POST">
+            <input  id="searchQuiz" name="searchQuiz" type="search" placeholder="Wyszukaj quiz" />
+            <input type="submit" name="search_btn" value="Szukaj">
+        </form>
+
+    </div>
+    <div id="quizesList" class="container">
+        {% for quiz in quizes[:10] %}
+        
+        <div class="quizOptions">
+            <a href="{{ url_for('quiz.solve_quiz',quiz_id_parameter=quiz.id) }}">
+                <div class="quizView">
+
+                    {{ quiz.title }}
+                    <br />
+                    {{ quiz.description }}
+
+                </div>
+            </a>
+            <a href="{{ url_for('quiz.edit_quiz',quiz_id_parameter=quiz.id) }}">
+                <div class="quizEdit"> ... </div>
+            </a>
+            <div style="clear:both"></div>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        jQuery(function ($) {
+            $.scrollTo(0);
+
+
+            $('#link3').click(function () { $.scrollTo($('.container'), 500); });
+            $('.scrollup').click(function () { $.scrollTo($('body'), 1000); });
+        }
+        );
+
+        $(window).scroll(
+            function () {
+                if ($(this).scrollTop() > 300) $('.scrollup').fadeIn();
+                else $('.scrollup').fadeOut();
+            }
+        );
+    </script>
+{% endblock %}

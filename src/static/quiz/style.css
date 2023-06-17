@@ -1,12 +1,4 @@
-body {color:#000000;background-color:#FFFFFF;font-family:Arial, Helvetica, sans-serif;font-size:20px;}
-h1 {font-size:24px;}
-h2 {font-size:22px;}
-h3 {font-size:20px;}
-h4 {font-size:18px;}
-h5 {font-size:16px;}
-h6 {font-size:14px;}
-
-html {
+﻿html {
     min-height: 100%;
     margin: 0;
 }
@@ -87,7 +79,20 @@ header ul li {
     margin-left: auto;
     margin-right: auto;
 }
-
+/*
+.justALine {
+    margin: 10px;
+    background: rgb(223,215,79);
+    background: linear-gradient(90deg, rgba(223,215,79,1) 0%, rgba(153,238,117,1) 0%, rgba(244,251,118,1) 48%, rgba(242,138,169,1) 98%);
+    height: 10px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+*/
+/*
+    Styles for links
+*/
 a:link {
     color: black;
     text-decoration: none;
@@ -127,4 +132,3 @@ a:active {
     background-size: contain;
     background-repeat: no-repeat;
 }
-

@@ -1,0 +1,74 @@
+{% extends 'base.html' %} 
+
+{% block title %}Solve Quiz{% endblock %} 
+
+{% block head %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='quiz/jquery.scrollTo.min.js') }}"></script>
+<link href="{{ url_for('static', filename='quiz/styleSolveQuiz.css') }}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='quiz/style.css') }}">
+
+{% endblock %} 
+{% block content %}
+<a href="#" class="scrollup"></a>
+<div class="container">
+  <form
+    action="{{ url_for('quiz.solve_quiz',quiz_id_parameter=quiz.id) }}"
+    method="POST">
+
+    <h1>{{quiz.title}}</h1>
+    <h4>{{quiz.description}}</h4>
+
+    {% if questions|length < 1 %}
+    <h4 style="text-align: center">Nie ma żadnych pytań. Gratulacje zdałeś!</h4>
+
+    {% else %}
+    <table class="tableQuestions">
+      <h1>Pytania</h1>
+      {% for question in questions %}
+      <tr>
+        <td colspan="2">{{ question.text }}</td>
+          </tr>
+          {% for answer in question.answers %}
+          <tr>
+            <td class="question">{{ answer.text }}</td>
+            <td class="answer">
+
+              <label for={{question.id}} class="hidden" ></label>
+              <input type="checkbox" name="{{question.id}}" value={{answer.id}} class="answerBox"/>
+
+            </td>
+          </tr>
+          {% endfor %} 
+      {% endfor %}
+    </table>
+    {% endif %}
+
+    <h1>Zakończ rozwiązywanie!</h1>
+
+    <input
+      type="submit"
+      name="finish_solving_btn"
+      value="Zakończ rozwiązywanie"
+    />
+  </form>
+</div>
+<script>
+    jQuery(function ($) {
+        $.scrollTo(0);
+
+
+        $('#link3').click(function () { $.scrollTo($('.container'), 500); });
+        $('.scrollup').click(function () { $.scrollTo($('body'), 1000); });
+    }
+    );
+
+    $(window).scroll(
+        function () {
+            if ($(this).scrollTop() > 300) $('.scrollup').fadeIn();
+            else $('.scrollup').fadeOut();
+        }
+    );
+</script>
+{% endblock %}

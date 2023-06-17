@@ -1,0 +1,12 @@
+﻿.questionClass {
+    min-width: 400px;
+}
+
+.answerClass {
+    height: 36px;
+}
+
+.isItTrueClass {
+    height: 42px;
+    width: 42px;
+}
