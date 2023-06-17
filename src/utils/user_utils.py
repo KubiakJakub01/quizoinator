@@ -17,6 +17,7 @@ class UserUtils:
         self.Users = Users
         self.images_dir = Path(images_dir)
         self.images_dir.mkdir(parents=True, exist_ok=True)
+        self.pic_name = "default_pic.png"
 
     def user_home(self):
         """User home page"""
@@ -70,7 +71,7 @@ class UserUtils:
     def process_picture(self, picture):
         """Process picture"""
         if not picture:
-            pic_name = "default.png"
+            pic_name = self.pic_name
         else:
             profile_filename = secure_filename(picture.filename)
             pic_name = str(uuid.uuid4()) + profile_filename
