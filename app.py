@@ -35,6 +35,7 @@ def base():
     """Base context for all templates"""
     form = SearchForm()
     admin_list = [admin.user_id for admin in Admin.query.all()]
+    print("admin_list", admin_list)
     return dict(form=form, admin_list=admin_list)
 
 
